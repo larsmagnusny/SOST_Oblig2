@@ -1,0 +1,146 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<xmile version="1.0" level="3" xmlns="http://www.systemdynamics.org/XMILE" xmlns:isee="http://iseesystems.com/XMILE">
+    <header>
+        <smile version="1.0" namespace="std, isee">
+            <uses_submodels />
+        </smile>
+        <name>Market</name>
+        <uuid>8a313c41-f1b5-45e2-90a6-6766b07e5e47</uuid>
+        <vendor>isee systems, inc.</vendor>
+        <product version="10.0.4" lang="en">STELLA</product>
+    </header>
+    <style>
+        <model font-family="Arial" font-size="9" />
+        <interface font-family="Arial" font-size="9" />
+    </style>
+    <sim_specs method="Euler" time_units="Time">
+        <start>0</start>
+        <stop>12</stop>
+        <dt>0.25</dt>
+    </sim_specs>
+    <model_units />
+    <isee:prefs layer="map" grid_width="20" grid_height="50" divide_by_zero_alert="true" hide_taskbar="true" show_module_prefix="true">
+        <isee:window width="1904" height="981" />
+        <isee:security />
+        <isee:print_setup width="612" height="792" />
+    </isee:prefs>
+    <isee:equation_prefs order_by="module" />
+    <model>
+        <module name="Market_Share">
+            <display x="251" y="59" color="blue" />
+        </module>
+        <module name="Anual_Sales">
+            <display x="142" y="32" color="blue" />
+        </module>
+        <module name="Attractiveness">
+            <display x="78" y="80" color="blue" />
+        </module>
+        <module name="Compared_Price_Quality_Factor">
+            <display x="83" y="169" color="blue" />
+        </module>
+        <module name="Development_Budget">
+            <display x="84" y="220" color="blue" />
+        </module>
+        <module name="Competition">
+            <display x="254" y="112" color="blue" />
+        </module>
+        <module name="Other_Price_Quality_Factor">
+            <display x="227" y="156" color="blue" />
+        </module>
+        <display page_width="612" page_height="792" isee:show_values_on_hover="true" isee:converter_size="medium" isee:name_only_modules="true" zoom="300" isee:animate_flows="true" isee:animate_stocks="true" isee:animate_converters="true" report_every_dt="true">
+            <connector x="167" y="26" uid="0" color="#FF007F">
+                <from>Anual_Sales</from>
+                <to>Market_Share</to>
+                <polarity>+</polarity>
+            </connector>
+            <connector x="72" y="163" uid="1" color="#FF007F">
+                <from>Compared_Price_Quality_Factor</from>
+                <to>Attractiveness</to>
+                <polarity>+</polarity>
+            </connector>
+            <connector x="74" y="73" uid="2" color="#FF007F">
+                <from>Attractiveness</from>
+                <to>Anual_Sales</to>
+                <polarity>+</polarity>
+            </connector>
+            <connector x="145" y="38" uid="3" color="#FF007F">
+                <from>Anual_Sales</from>
+                <to>Attractiveness</to>
+                <polarity>+</polarity>
+            </connector>
+            <connector x="254" y="65" uid="4" color="#FF007F">
+                <from>Market_Share</from>
+                <to>Competition</to>
+                <polarity>+</polarity>
+            </connector>
+            <connector x="85" y="214" uid="5" color="#FF007F">
+                <from>Development_Budget</from>
+                <to>Compared_Price_Quality_Factor</to>
+                <polarity>+</polarity>
+            </connector>
+            <connector x="253" y="118" uid="6" color="#FF007F">
+                <from>Competition</from>
+                <to>Other_Price_Quality_Factor</to>
+                <polarity>+</polarity>
+            </connector>
+            <connector x="217" y="161" uid="7" color="#FF007F">
+                <from>Other_Price_Quality_Factor</from>
+                <to>Compared_Price_Quality_Factor</to>
+                <polarity>-</polarity>
+            </connector>
+        </display>
+        <interface page_width="788" page_height="528">
+            <simulation_delay>0.1</simulation_delay>
+            <pages />
+        </interface>
+    </model>
+    <model name="Anual_Sales">
+        <display page_width="612" page_height="792" isee:show_values_on_hover="true" isee:converter_size="medium" isee:name_only_modules="true" isee:animate_flows="true" isee:animate_stocks="true" isee:animate_converters="true" report_every_dt="true" />
+        <interface page_width="788" page_height="528">
+            <simulation_delay>0.1</simulation_delay>
+            <pages />
+        </interface>
+    </model>
+    <model name="Attractiveness">
+        <display page_width="612" page_height="792" isee:show_values_on_hover="true" isee:converter_size="medium" isee:name_only_modules="true" isee:animate_flows="true" isee:animate_stocks="true" isee:animate_converters="true" report_every_dt="true" />
+        <interface page_width="788" page_height="528">
+            <simulation_delay>0.1</simulation_delay>
+            <pages />
+        </interface>
+    </model>
+    <model name="Compared_Price_Quality_Factor">
+        <display page_width="612" page_height="792" isee:show_values_on_hover="true" isee:converter_size="medium" isee:name_only_modules="true" isee:animate_flows="true" isee:animate_stocks="true" isee:animate_converters="true" report_every_dt="true" />
+        <interface page_width="788" page_height="528">
+            <simulation_delay>0.1</simulation_delay>
+            <pages />
+        </interface>
+    </model>
+    <model name="Competition">
+        <display page_width="612" page_height="792" isee:show_values_on_hover="true" isee:converter_size="medium" isee:name_only_modules="true" isee:animate_flows="true" isee:animate_stocks="true" isee:animate_converters="true" report_every_dt="true" />
+        <interface page_width="788" page_height="528">
+            <simulation_delay>0.1</simulation_delay>
+            <pages />
+        </interface>
+    </model>
+    <model name="Development_Budget">
+        <display page_width="612" page_height="792" isee:show_values_on_hover="true" isee:converter_size="medium" isee:name_only_modules="true" isee:animate_flows="true" isee:animate_stocks="true" isee:animate_converters="true" report_every_dt="true" />
+        <interface page_width="788" page_height="528">
+            <simulation_delay>0.1</simulation_delay>
+            <pages />
+        </interface>
+    </model>
+    <model name="Market_Share">
+        <display page_width="612" page_height="792" isee:show_values_on_hover="true" isee:converter_size="medium" isee:name_only_modules="true" isee:animate_flows="true" isee:animate_stocks="true" isee:animate_converters="true" report_every_dt="true" />
+        <interface page_width="788" page_height="528">
+            <simulation_delay>0.1</simulation_delay>
+            <pages />
+        </interface>
+    </model>
+    <model name="Other_Price_Quality_Factor">
+        <display page_width="612" page_height="792" isee:show_values_on_hover="true" isee:converter_size="medium" isee:name_only_modules="true" isee:animate_flows="true" isee:animate_stocks="true" isee:animate_converters="true" report_every_dt="true" />
+        <interface page_width="788" page_height="528">
+            <simulation_delay>0.1</simulation_delay>
+            <pages />
+        </interface>
+    </model>
+</xmile>

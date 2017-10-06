@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<xmile version="1.0" level="3" xmlns="http://www.systemdynamics.org/XMILE" xmlns:isee="http://iseesystems.com/XMILE">
+    <header>
+        <smile version="1.0" namespace="std, isee">
+            <uses_submodels />
+        </smile>
+        <name>Demand</name>
+        <uuid>20f59dd0-91f5-47a9-878c-5adc148b4f91</uuid>
+        <vendor>isee systems, inc.</vendor>
+        <product version="10.0.4" lang="en">STELLA</product>
+    </header>
+    <style>
+        <model font-family="Arial" font-size="9" />
+        <interface font-family="Arial" font-size="9" />
+    </style>
+    <sim_specs method="Euler" time_units="Time">
+        <start>0</start>
+        <stop>12</stop>
+        <dt>0.25</dt>
+    </sim_specs>
+    <model_units />
+    <isee:prefs layer="model" grid_width="20" grid_height="50" divide_by_zero_alert="true" hide_taskbar="true" show_module_prefix="true">
+        <isee:window width="1904" height="981" />
+        <isee:security />
+        <isee:print_setup width="612" height="792" />
+    </isee:prefs>
+    <isee:equation_prefs order_by="module" />
+    <model>
+        <module name="Demand">
+            <display x="100" y="37" color="blue" />
+        </module>
+        <module name="Product_Attractiveness">
+            <display x="89" y="135" color="blue" />
+        </module>
+        <module name="Product_Age">
+            <display x="65" y="178" color="blue" />
+        </module>
+        <module name="Sales">
+            <display x="175" y="75" color="blue" />
+        </module>
+        <display page_width="612" page_height="792" isee:show_values_on_hover="true" isee:converter_size="medium" isee:name_only_modules="true" zoom="300" isee:animate_flows="true" isee:animate_stocks="true" isee:animate_converters="true" report_every_dt="true">
+            <connector x="70" y="172" uid="0" color="#FF007F">
+                <from>Product_Age</from>
+                <to>Product_Attractiveness</to>
+                <polarity>-</polarity>
+            </connector>
+            <connector x="81" y="129" uid="1" color="#FF007F">
+                <from>Product_Attractiveness</from>
+                <to>Demand</to>
+                <polarity>+</polarity>
+            </connector>
+            <connector x="104" y="31" uid="2" color="#FF007F">
+                <from>Demand</from>
+                <to>Sales</to>
+                <polarity>+</polarity>
+            </connector>
+            <connector x="170" y="81" uid="3" color="#FF007F">
+                <from>Sales</from>
+                <to>Demand</to>
+                <polarity>-</polarity>
+            </connector>
+            <connector x="175" y="81" uid="4" color="#FF007F">
+                <from>Sales</from>
+                <to>Product_Attractiveness</to>
+                <polarity>+</polarity>
+            </connector>
+            <text_box x="127" y="44" uid="5" color="black" font-family="Arial" font-size="12" padding="5" width="23" height="25">B</text_box>
+            <text_box x="94" y="98" uid="6" color="black" font-family="Arial" font-size="12" padding="5" width="23" height="25">R</text_box>
+        </display>
+        <interface page_width="788" page_height="528">
+            <simulation_delay>0.1</simulation_delay>
+            <pages />
+        </interface>
+    </model>
+    <model name="Demand">
+        <display page_width="612" page_height="792" isee:show_values_on_hover="true" isee:converter_size="medium" isee:name_only_modules="true" isee:animate_flows="true" isee:animate_stocks="true" isee:animate_converters="true" report_every_dt="true" />
+        <interface page_width="788" page_height="528">
+            <simulation_delay>0.1</simulation_delay>
+            <pages />
+        </interface>
+    </model>
+    <model name="Product_Age">
+        <display page_width="612" page_height="792" isee:show_values_on_hover="true" isee:converter_size="medium" isee:name_only_modules="true" isee:animate_flows="true" isee:animate_stocks="true" isee:animate_converters="true" report_every_dt="true" />
+        <interface page_width="788" page_height="528">
+            <simulation_delay>0.1</simulation_delay>
+            <pages />
+        </interface>
+    </model>
+    <model name="Product_Attractiveness">
+        <display page_width="612" page_height="792" isee:show_values_on_hover="true" isee:converter_size="medium" isee:name_only_modules="true" isee:animate_flows="true" isee:animate_stocks="true" isee:animate_converters="true" report_every_dt="true" />
+        <interface page_width="788" page_height="528">
+            <simulation_delay>0.1</simulation_delay>
+            <pages />
+        </interface>
+    </model>
+    <model name="Sales">
+        <display page_width="612" page_height="792" isee:show_values_on_hover="true" isee:converter_size="medium" isee:name_only_modules="true" isee:animate_flows="true" isee:animate_stocks="true" isee:animate_converters="true" report_every_dt="true" />
+        <interface page_width="788" page_height="528">
+            <simulation_delay>0.1</simulation_delay>
+            <pages />
+        </interface>
+    </model>
+</xmile>
