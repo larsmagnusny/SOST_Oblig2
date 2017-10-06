@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<xmile version="1.0" level="3" xmlns="http://www.systemdynamics.org/XMILE" xmlns:isee="http://iseesystems.com/XMILE">
+    <header>
+        <smile version="1.0" namespace="std, isee">
+            <uses_conveyor />
+        </smile>
+        <name>Supply_Demand_Test</name>
+        <uuid>45bd2bd6-30f4-4ccc-a681-465ee29ecd01</uuid>
+        <vendor>isee systems, inc.</vendor>
+        <product version="10.0.4" lang="en">STELLA</product>
+    </header>
+    <style>
+        <model font-family="Arial" font-size="9" />
+        <interface font-family="Arial" font-size="9" />
+    </style>
+    <sim_specs method="Euler" time_units="Time">
+        <start>0</start>
+        <stop>12</stop>
+        <dt>0.25</dt>
+    </sim_specs>
+    <model_units />
+    <isee:prefs layer="model" grid_width="20" grid_height="50" divide_by_zero_alert="true" hide_taskbar="true" show_module_prefix="true">
+        <isee:window width="1920" height="997" />
+        <isee:security />
+        <isee:print_setup width="571" height="818" />
+    </isee:prefs>
+    <isee:equation_prefs order_by="module" />
+    <model>
+        <stock name="Production_Chain">
+            <eqn>0</eqn>
+            <inflow>Production_Rate</inflow>
+            <outflow>Deliver</outflow>
+            <conveyor>
+                <len>1/2</len>
+            </conveyor>
+            <display x="175" y="253" color="blue">
+                <isee:story_val>217.221</isee:story_val>
+            </display>
+        </stock>
+        <flow name="Production_Rate">
+            <eqn>IF Clock THEN&#x0A;((-3*Estimated_Units)/288)*(12-(Clock-12))^2 + ((3*Estimated_Units)/24)&#x0A;ELSE&#x0A;0</eqn>
+            <non_negative />
+            <display x="113" y="254" color="blue">
+                <pts>
+                    <pt x="73" y="254" />
+                    <pt x="153" y="254" />
+                </pts>
+            </display>
+        </flow>
+        <aux name="Demand">
+            <eqn>0</eqn>
+            <display x="392" y="278" color="blue" />
+        </aux>
+        <stock name="Shop">
+            <eqn>0</eqn>
+            <inflow>Deliver</inflow>
+            <non_negative />
+            <display x="262" y="254" color="blue" />
+        </stock>
+        <aux name="Market_Price">
+            <eqn>600</eqn>
+            <display x="75" y="395" color="blue" />
+        </aux>
+        <stock name="Clock">
+            <eqn>0</eqn>
+            <inflow>Start_Clock</inflow>
+            <outflow>Count_down</outflow>
+            <non_negative />
+            <display x="172" y="155" color="blue" />
+        </stock>
+        <flow name="Start_Clock">
+            <eqn>IF Clock &lt; 1 THEN&#x0A;24/DT&#x0A;ELSE&#x0A;0</eqn>
+            <non_negative />
+            <display x="127" y="157" color="blue">
+                <pts>
+                    <pt x="105" y="157" />
+                    <pt x="150" y="157" />
+                </pts>
+            </display>
+        </flow>
+        <flow name="Deliver">
+            <eqn>0</eqn>
+            <non_negative />
+            <display x="218" y="254" color="blue">
+                <pts>
+                    <pt x="197" y="254" />
+                    <pt x="240" y="254" />
+                </pts>
+            </display>
+        </flow>
+        <flow name="Count_down">
+            <eqn>1</eqn>
+            <non_negative />
+            <display x="234" y="155" color="blue">
+                <pts>
+                    <pt x="194" y="155" />
+                    <pt x="274" y="155" />
+                </pts>
+            </display>
+        </flow>
+        <aux name="Estimated_Units">
+            <eqn>(29000/600^2)*Market_Price^2</eqn>
+            <display x="75" y="340" color="blue" />
+        </aux>
+        <display page_width="571" page_height="818" isee:show_values_on_hover="true" isee:converter_size="medium" zoom="150" isee:animate_flows="true" isee:animate_stocks="true" isee:animate_converters="true" report_every_dt="true" scroll_y="88">
+            <connector x="150" y="143" uid="0" color="#FF007F">
+                <from>Clock</from>
+                <to>Start_Clock</to>
+            </connector>
+            <connector x="75" y="386" uid="1" color="#FF007F">
+                <from>Market_Price</from>
+                <to>Estimated_Units</to>
+            </connector>
+            <connector x="76" y="330" uid="2" color="#FF007F">
+                <from>Estimated_Units</from>
+                <to>Production_Rate</to>
+            </connector>
+            <connector x="161" y="172" uid="3" color="#FF007F">
+                <from>Clock</from>
+                <to>Production_Rate</to>
+            </connector>
+        </display>
+        <interface page_width="788" page_height="528">
+            <simulation_delay>0.1</simulation_delay>
+            <pages />
+        </interface>
+    </model>
+</xmile>
