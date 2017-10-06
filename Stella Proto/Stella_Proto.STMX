@@ -22,7 +22,7 @@
     <isee:prefs layer="model" grid_width="20" grid_height="50" divide_by_zero_alert="true" hide_taskbar="true" show_module_prefix="true">
         <isee:window width="1904" height="981" />
         <isee:security />
-        <isee:print_setup width="571" height="818" />
+        <isee:print_setup width="612" height="792" />
     </isee:prefs>
     <isee:equation_prefs order_by="module" />
     <model>
@@ -31,38 +31,15 @@
             <inflow>Inc_rate</inflow>
             <outflow>Expenses</outflow>
             <outflow>Tax</outflow>
-            <outflow>Develop_New_Model</outflow>
-            <display x="188" y="406" color="blue" />
+            <display x="102" y="316" color="blue" />
         </stock>
-        <stock name="Create_Phone_Model" access="output">
-            <eqn>0</eqn>
-            <inflow>Dev_Rate</inflow>
-            <outflow>CPhoneOut</outflow>
-            <conveyor>
-                <len>24</len>
-                <capacity>1</capacity>
-            </conveyor>
-            <display x="135" y="170" color="blue">
-                <isee:story_val>0</isee:story_val>
-            </display>
-        </stock>
-        <flow name="Dev_Rate">
-            <eqn>IF Create_Phone_Model &lt; 1 THEN&#x0A;1/DT&#x0A;ELSE&#x0A;0</eqn>
-            <non_negative />
-            <display x="80" y="170" color="blue">
-                <pts>
-                    <pt x="47" y="170" />
-                    <pt x="113" y="170" />
-                </pts>
-            </display>
-        </flow>
         <flow name="CPhoneOut">
-            <eqn>0</eqn>
+            <eqn>IF Production_Line_Lifetime &lt; 1 THEN&#x0A;1/DT&#x0A;ELSE&#x0A;0</eqn>
             <non_negative />
-            <display x="192" y="172" color="blue">
+            <display x="106" y="82" color="blue">
                 <pts>
-                    <pt x="157" y="172" />
-                    <pt x="228" y="172" />
+                    <pt x="71" y="82" />
+                    <pt x="142" y="82" />
                 </pts>
             </display>
         </flow>
@@ -72,56 +49,56 @@
             <outflow>Sales_Rate</outflow>
             <outflow>Dump_Excess</outflow>
             <non_negative />
-            <display x="379" y="266" color="blue" />
+            <display x="293" y="176" color="blue" />
         </stock>
         <stock name="Produce_and_Transport">
             <eqn>0</eqn>
             <inflow>Production_Rate</inflow>
             <outflow>Production_Output</outflow>
             <conveyor>
-                <len>1/4</len>
+                <len>1/2</len>
             </conveyor>
-            <display x="256" y="264" color="blue">
+            <display x="170" y="174" color="blue">
                 <isee:story_val>0</isee:story_val>
             </display>
         </stock>
         <flow name="Production_Rate">
             <eqn>IF Product_Lifetime &gt;= 12  THEN&#x0A;Production_Line_Lifetime*((3*Expected_Lifetime_Sales/24) - (Expected_Lifetime_Sales/1152)*(12 - (Product_Lifetime-12))^2)&#x0A;ELSE&#x0A;0</eqn>
             <non_negative />
-            <display x="202" y="266" color="blue">
+            <display x="116" y="176" color="blue">
                 <pts>
-                    <pt x="171" y="266" />
-                    <pt x="234" y="266" />
+                    <pt x="85" y="176" />
+                    <pt x="148" y="176" />
                 </pts>
             </display>
         </flow>
         <flow name="Production_Output">
             <eqn>0</eqn>
             <non_negative />
-            <display x="317" y="268" color="blue">
+            <display x="231" y="178" color="blue">
                 <pts>
-                    <pt x="278" y="268" />
-                    <pt x="357" y="268" />
+                    <pt x="192" y="178" />
+                    <pt x="271" y="178" />
                 </pts>
             </display>
         </flow>
         <flow name="Sales_Rate">
-            <eqn>IF Delay(Product_Lifetime, 1/4) &gt;= 0.01 THEN&#x0A;(Expected_Lifetime_Sales*3 / 13824)*Delay(Product_Lifetime, 1/4)^2&#x0A;ELSE&#x0A;0</eqn>
+            <eqn>IF Delay(Product_Lifetime, 1/2) &gt;= 0.01 THEN&#x0A;(Expected_Lifetime_Sales*3 / 13824)*Delay(Product_Lifetime, 1/2)^2&#x0A;ELSE&#x0A;0</eqn>
             <non_negative />
-            <display x="376" y="339" color="blue">
+            <display x="290" y="249" color="blue">
                 <pts>
-                    <pt x="376" y="283" />
-                    <pt x="376" y="395" />
+                    <pt x="290" y="193" />
+                    <pt x="290" y="305" />
                 </pts>
             </display>
         </flow>
         <flow name="Inc_rate">
             <eqn>Sales_Rate*Sale_Price</eqn>
             <non_negative />
-            <display x="260" y="406" color="blue">
+            <display x="174" y="316" color="blue">
                 <pts>
-                    <pt x="310" y="406" />
-                    <pt x="210" y="406" />
+                    <pt x="224" y="316" />
+                    <pt x="124" y="316" />
                 </pts>
             </display>
         </flow>
@@ -132,17 +109,17 @@
             <conveyor>
                 <len>48</len>
             </conveyor>
-            <display x="378" y="412" color="blue">
+            <display x="292" y="322" color="blue">
                 <isee:story_val>0</isee:story_val>
             </display>
         </stock>
         <flow name="Dump_Transition">
             <eqn>0</eqn>
             <non_negative />
-            <display x="437" y="416" color="blue">
+            <display x="351" y="326" color="blue">
                 <pts>
-                    <pt x="400" y="416" />
-                    <pt x="474" y="416" />
+                    <pt x="314" y="326" />
+                    <pt x="388" y="326" />
                 </pts>
             </display>
         </flow>
@@ -153,190 +130,181 @@
             <conveyor>
                 <len>24</len>
             </conveyor>
-            <display x="250" y="176" color="blue">
-                <isee:story_val>0</isee:story_val>
+            <display x="164" y="86" color="blue">
+                <isee:story_val>1</isee:story_val>
             </display>
         </stock>
         <flow name="Out">
             <eqn>0</eqn>
             <non_negative />
-            <display x="297" y="175" color="blue">
+            <display x="211" y="85" color="blue">
                 <pts>
-                    <pt x="272" y="175" />
-                    <pt x="322" y="175" />
+                    <pt x="186" y="85" />
+                    <pt x="236" y="85" />
                 </pts>
             </display>
         </flow>
         <flow name="Expenses">
             <eqn>Production_Output*Phone_Cost</eqn>
             <non_negative />
-            <display x="249" y="316" color="blue">
+            <display x="163" y="226" color="blue">
                 <pts>
-                    <pt x="210" y="389" />
-                    <pt x="210" y="316" />
-                    <pt x="288" y="316" />
+                    <pt x="124" y="299" />
+                    <pt x="124" y="226" />
+                    <pt x="202" y="226" />
                 </pts>
             </display>
         </flow>
         <aux name="Recycle_tax">
-            <eqn>600*0.35</eqn>
-            <display x="132" y="477" color="blue" />
+            <eqn>Sale_Price*0.35</eqn>
+            <display x="46" y="387" color="blue" />
         </aux>
         <flow name="Tax">
             <eqn>Recycle_tax*(Dump_Transition+Dump_Excess)</eqn>
             <non_negative />
-            <display x="209" y="477" color="blue">
+            <display x="123" y="387" color="blue">
                 <pts>
-                    <pt x="209" y="423" />
-                    <pt x="209" y="532" />
+                    <pt x="123" y="333" />
+                    <pt x="123" y="442" />
                 </pts>
             </display>
         </flow>
         <aux name="Phone_Cost">
-            <eqn>(400 - (12000/58))*1.05^(TIME / 240)</eqn>
-            <display x="161" y="301" color="blue" />
+            <eqn>400*1.05^(TIME / 12)</eqn>
+            <display x="75" y="211" color="blue" />
         </aux>
         <aux name="Sale_Price">
-            <eqn>600*1.05^(TIME / 240)</eqn>
-            <display x="159" y="343" color="blue" />
+            <eqn>600*1.05^(TIME / 12)</eqn>
+            <display x="73" y="253" color="blue" />
         </aux>
         <stock name="Product_Lifetime" access="output">
             <eqn>0</eqn>
             <inflow>Start_Counting</inflow>
             <outflow>CountDown</outflow>
             <non_negative />
-            <display x="479" y="269" color="blue" />
+            <display x="393" y="179" color="blue" />
         </stock>
         <flow name="Start_Counting">
             <eqn>IF CPhoneOut THEN&#x0A;24/DT&#x0A;ELSE&#x0A;0</eqn>
             <non_negative />
-            <display x="480" y="202" color="blue">
+            <display x="394" y="112" color="blue">
                 <pts>
-                    <pt x="480" y="152" />
-                    <pt x="480" y="252" />
+                    <pt x="394" y="62" />
+                    <pt x="394" y="162" />
                 </pts>
             </display>
         </flow>
         <flow name="CountDown">
             <eqn>1</eqn>
             <non_negative />
-            <display x="543" y="286" color="blue">
+            <display x="500" y="286" color="blue">
                 <pts>
-                    <pt x="501" y="286" />
+                    <pt x="414" y="196" />
+                    <pt x="414" y="286" />
                     <pt x="586" y="286" />
                 </pts>
             </display>
         </flow>
         <flow name="Dump_Excess">
             <eqn>IF CPhoneOut THEN&#x0A;Store_Stock / DT&#x0A;ELSE&#x0A;0</eqn>
-            <display x="401" y="198" color="blue">
+            <display x="314" y="108" color="blue">
                 <pts>
-                    <pt x="401" y="249" />
-                    <pt x="401" y="147" />
-                </pts>
-            </display>
-        </flow>
-        <flow name="Develop_New_Model">
-            <eqn>IF Create_Phone_Model THEN&#x0A;12000000 / 24&#x0A;ELSE&#x0A;0</eqn>
-            <non_negative />
-            <display x="112" y="392" color="blue">
-                <pts>
-                    <pt x="166" y="392" />
-                    <pt x="58" y="392" />
+                    <pt x="314" y="159" />
+                    <pt x="314" y="57" />
                 </pts>
             </display>
         </flow>
         <aux name="Market_Share">
             <eqn>0.34</eqn>
-            <display x="546" y="401" color="blue" />
+            <display x="460" y="311" color="blue" />
         </aux>
         <aux name="Expected_Lifetime_Sales">
             <eqn>Total_Market*Market_Share*2</eqn>
-            <display x="455" y="350" color="blue" />
+            <display x="369" y="260" color="blue" />
         </aux>
         <aux name="Total_Market">
             <eqn>85295</eqn>
-            <display x="546" y="354" color="blue" />
+            <display x="460" y="264" color="blue" />
         </aux>
-        <display page_width="571" page_height="818" page_cols="3" isee:show_values_on_hover="true" isee:converter_size="medium" zoom="150" isee:animate_flows="true" isee:animate_stocks="true" isee:animate_converters="true" report_every_dt="true">
-            <connector x="456" y="253" uid="0" color="#FF007F">
-                <from>Product_Lifetime</from>
-                <to>Production_Rate</to>
+        <display page_width="612" page_height="792" page_cols="3" page_rows="2" isee:show_values_on_hover="true" isee:converter_size="medium" zoom="150" isee:animate_flows="true" isee:animate_stocks="true" isee:animate_converters="true" report_every_dt="true">
+            <connector x="142" y="75" uid="0" color="#FF007F">
+                <from>Production_Line_Lifetime</from>
+                <to>CPhoneOut</to>
             </connector>
-            <connector x="462" y="286" uid="1" color="#FF007F">
-                <from>Product_Lifetime</from>
-                <to>Sales_Rate</to>
-            </connector>
-            <connector x="198" y="175" uid="2" color="#FF007F">
-                <from>CPhoneOut</from>
-                <to>Start_Counting</to>
-            </connector>
-            <connector x="113" y="156" uid="3" color="#FF007F">
-                <from>Create_Phone_Model</from>
-                <to>Dev_Rate</to>
-            </connector>
-            <connector x="537" y="355" uid="4" color="#FF007F">
-                <from>Total_Market</from>
-                <to>Expected_Lifetime_Sales</to>
-            </connector>
-            <connector x="310" y="274" uid="5" color="#FF007F">
-                <from>Production_Output</from>
-                <to>Expenses</to>
-            </connector>
-            <connector x="537" y="398" uid="6" color="#FF007F">
-                <from>Market_Share</from>
-                <to>Expected_Lifetime_Sales</to>
-            </connector>
-            <connector x="168" y="297" uid="7" color="#FF007F">
-                <from>Phone_Cost</from>
-                <to>Expenses</to>
-            </connector>
-            <connector x="168" y="343" uid="8" color="#FF007F">
+            <connector x="68" y="261" uid="1" color="#FF007F">
                 <from>Sale_Price</from>
-                <to>Inc_rate</to>
+                <to>Recycle_tax</to>
             </connector>
-            <connector x="141" y="477" uid="9" color="#FF007F">
-                <from>Recycle_tax</from>
-                <to>Tax</to>
-            </connector>
-            <connector x="368" y="343" uid="10" color="#FF007F">
-                <from>Sales_Rate</from>
-                <to>Inc_rate</to>
-            </connector>
-            <connector x="194" y="162" uid="11" color="#FF007F">
-                <from>CPhoneOut</from>
-                <to>Dump_Excess</to>
-            </connector>
-            <connector x="137" y="187" uid="12" color="#FF007F">
-                <from>Create_Phone_Model</from>
-                <to>Develop_New_Model</to>
-            </connector>
-            <connector x="401" y="257" uid="13" color="#FF007F">
-                <from>Store_Stock</from>
-                <to>Dump_Excess</to>
-            </connector>
-            <connector x="434" y="426" uid="14" color="#FF007F">
-                <from>Dump_Transition</from>
-                <to>Tax</to>
-            </connector>
-            <connector x="447" y="346" uid="15" color="#FF007F">
-                <from>Expected_Lifetime_Sales</from>
-                <to>Sales_Rate</to>
-            </connector>
-            <connector x="406" y="206" uid="16" color="#FF007F">
-                <from>Dump_Excess</from>
-                <to>Tax</to>
-            </connector>
-            <connector x="449" y="344" uid="17" color="#FF007F">
+            <connector x="360" y="260" uid="2" color="#FF007F">
                 <from>Expected_Lifetime_Sales</from>
                 <to>Production_Rate</to>
             </connector>
-            <connector x="236" y="193" uid="18" color="#FF007F">
+            <connector x="155" y="103" uid="3" color="#FF007F">
                 <from>Production_Line_Lifetime</from>
                 <to>Production_Rate</to>
             </connector>
+            <connector x="361" y="257" uid="4" color="#FF007F">
+                <from>Expected_Lifetime_Sales</from>
+                <to>Sales_Rate</to>
+            </connector>
+            <connector x="82" y="253" uid="5" color="#FF007F">
+                <from>Sale_Price</from>
+                <to>Inc_rate</to>
+            </connector>
+            <connector x="315" y="168" uid="6" color="#FF007F">
+                <from>Store_Stock</from>
+                <to>Dump_Excess</to>
+            </connector>
+            <connector x="347" y="336" uid="7" color="#FF007F">
+                <from>Dump_Transition</from>
+                <to>Tax</to>
+            </connector>
+            <connector x="108" y="73" uid="8" color="#FF007F">
+                <from>CPhoneOut</from>
+                <to>Dump_Excess</to>
+            </connector>
+            <connector x="286" y="257" uid="9" color="#FF007F">
+                <from>Sales_Rate</from>
+                <to>Inc_rate</to>
+            </connector>
+            <connector x="55" y="387" uid="10" color="#FF007F">
+                <from>Recycle_tax</from>
+                <to>Tax</to>
+            </connector>
+            <connector x="319" y="117" uid="11" color="#FF007F">
+                <from>Dump_Excess</from>
+                <to>Tax</to>
+            </connector>
+            <connector x="112" y="85" uid="12" color="#FF007F">
+                <from>CPhoneOut</from>
+                <to>Start_Counting</to>
+            </connector>
+            <connector x="83" y="206" uid="13" color="#FF007F">
+                <from>Phone_Cost</from>
+                <to>Expenses</to>
+            </connector>
+            <connector x="452" y="307" uid="14" color="#FF007F">
+                <from>Market_Share</from>
+                <to>Expected_Lifetime_Sales</to>
+            </connector>
+            <connector x="224" y="183" uid="15" color="#FF007F">
+                <from>Production_Output</from>
+                <to>Expenses</to>
+            </connector>
+            <connector x="451" y="264" uid="16" color="#FF007F">
+                <from>Total_Market</from>
+                <to>Expected_Lifetime_Sales</to>
+            </connector>
+            <connector x="371" y="162" uid="17" color="#FF007F">
+                <from>Product_Lifetime</from>
+                <to>Production_Rate</to>
+            </connector>
+            <connector x="371" y="195" uid="18" color="#FF007F">
+                <from>Product_Lifetime</from>
+                <to>Sales_Rate</to>
+            </connector>
             <stacked_container x="664" y="248" height="272" width="492" visible_index="0" uid="19">
-                <graph type="time_series" title="Untitled" background="#FFFFC9" show_grid="false" numbers_on_plots="true" isee:use_five_segments="false" isee:date_time="-704879634" time_precision="2" from="0" to="120">
+                <graph type="time_series" title="Untitled" background="#FFFFC9" show_grid="false" numbers_on_plots="true" isee:use_five_segments="false" isee:date_time="-704813777" time_precision="2" from="0" to="120">
                     <plot index="0" pen_width="1" color="blue" precision="0" show_y_axis="true">
                         <entity name="Money" />
                     </plot>
@@ -352,8 +320,8 @@
                 </graph>
             </stacked_container>
             <pad_icon x="648" y="289" width="26" height="22" color="#008F44" label_side="bottom" label="Graph 1" type="graph" icon_of="19" />
-            <stacked_container x="662" y="543" height="269" width="475" visible_index="0" uid="20">
-                <table title="Untitled Table" font-size="9" background="#E0E0E0" columns_width="63" orientation="vertical" report_every_dt="true" isee:date_time="-704879634">
+            <stacked_container x="662" y="542" height="269" width="475" visible_index="0" uid="20">
+                <table title="Untitled Table" font-size="9" background="#E0E0E0" columns_width="63" orientation="vertical" report_every_dt="true" isee:date_time="-704813777">
                     <item type="time" color="black" text-align="left" precision="3" width="100" />
                     <item color="black" text-align="left" precision="2" thousands_separator="true" index="0">
                         <entity name="Money" />

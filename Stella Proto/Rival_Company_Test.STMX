@@ -2,6 +2,7 @@
 <xmile version="1.0" level="3" xmlns="http://www.systemdynamics.org/XMILE" xmlns:isee="http://iseesystems.com/XMILE">
     <header>
         <smile version="1.0" namespace="std, isee">
+            <uses_arrays>1</uses_arrays>
             <uses_conveyor />
             <uses_submodels />
         </smile>
@@ -19,6 +20,9 @@
         <stop>120</stop>
         <dt reciprocal="true">0.0625</dt>
     </sim_specs>
+    <dimensions>
+        <dim name="Phone_Quality" size="10" />
+    </dimensions>
     <model_units />
     <isee:prefs layer="model" grid_width="20" grid_height="50" divide_by_zero_alert="true" hide_taskbar="true" show_module_prefix="true">
         <isee:window width="1904" height="981" />
@@ -27,16 +31,32 @@
     </isee:prefs>
     <isee:equation_prefs order_by="module" />
     <model>
-        <module name="Rival_Company">
-            <display x="64" y="100" color="blue" />
+        <module name="Marked">
+            <display x="30" y="131" color="blue" />
+            <connect to="Company_2" from="Company.Sales_Last_Year" />
         </module>
-        <display page_width="612" page_height="792" isee:show_values_on_hover="true" isee:converter_size="medium" zoom="300" isee:animate_flows="true" isee:animate_stocks="true" isee:animate_converters="true" report_interval="0.0625" report_every_dt="true" />
+        <module name="Company">
+            <display x="118" y="47" color="blue" />
+            <connect to="Salaries" from="Employees_1.Salary" />
+            <connect to="Converter_1" from="Marked.Company_1_MarketShare" />
+            <connect to="Total_Yearly_Sales" from="Marked.Total_Yearly_Sales" />
+        </module>
+        <display page_width="612" page_height="792" isee:show_values_on_hover="true" isee:converter_size="medium" zoom="300" isee:animate_flows="true" isee:animate_stocks="true" isee:animate_converters="true" report_interval="0.0625" report_every_dt="true">
+            <connector x="51" y="111" uid="0" color="#FF007F">
+                <from>Marked</from>
+                <to>Company</to>
+            </connector>
+            <connector x="97" y="67" uid="1" color="#FF007F">
+                <from>Company</from>
+                <to>Marked</to>
+            </connector>
+        </display>
         <interface page_width="788" page_height="528">
             <simulation_delay>0.1</simulation_delay>
             <pages />
         </interface>
     </model>
-    <model name="Rival_Company">
+    <model name="Company">
         <stock name="Dev_Phone">
             <eqn>0</eqn>
             <inflow>Phone_Dev</inflow>
@@ -44,17 +64,17 @@
             <conveyor>
                 <len>24</len>
             </conveyor>
-            <display x="122" y="68" color="blue">
+            <display x="156" y="55" color="blue">
                 <isee:story_val>24</isee:story_val>
             </display>
         </stock>
         <flow name="Phone_Dev">
             <eqn>IF TIME MOD 24 = 0 THEN&#x0A;24/DT&#x0A;ELSE&#x0A;0</eqn>
             <non_negative />
-            <display x="72" y="68" color="blue">
+            <display x="106" y="54" color="blue">
                 <pts>
-                    <pt x="44" y="68" />
-                    <pt x="100" y="68" />
+                    <pt x="78" y="54" />
+                    <pt x="134" y="54" />
                 </pts>
             </display>
         </flow>
@@ -63,29 +83,322 @@
             <inflow>Start_Clock</inflow>
             <outflow>Tick_Down</outflow>
             <non_negative />
-            <display x="227" y="69" color="blue" />
+            <display x="261" y="56" color="blue" />
         </stock>
         <flow name="Start_Clock">
             <eqn>0</eqn>
             <non_negative />
-            <display x="174" y="70" color="blue">
+            <display x="208" y="56" color="blue">
                 <pts>
-                    <pt x="144" y="70" />
-                    <pt x="205" y="70" />
+                    <pt x="178" y="56" />
+                    <pt x="239" y="56" />
                 </pts>
             </display>
         </flow>
         <flow name="Tick_Down">
             <eqn>1</eqn>
             <non_negative />
-            <display x="288" y="70" color="blue">
+            <display x="322" y="57" color="blue">
                 <pts>
-                    <pt x="249" y="70" />
-                    <pt x="328" y="70" />
+                    <pt x="283" y="57" />
+                    <pt x="362" y="57" />
                 </pts>
             </display>
         </flow>
-        <display page_width="612" page_height="792" isee:show_values_on_hover="true" isee:converter_size="medium" zoom="150" isee:animate_flows="true" isee:animate_stocks="true" isee:animate_converters="true" report_interval="0.0625" report_every_dt="true" />
+        <aux name="Development_Budget">
+            <eqn>6000000</eqn>
+            <display x="551" y="87" color="blue" />
+        </aux>
+        <aux name="Material_Cost">
+            <eqn>200</eqn>
+            <display x="453" y="41" color="blue" />
+        </aux>
+        <module name="Employees_1">
+            <display x="56" y="206" color="blue" />
+            <connect to="Converter_2" from="Company.Clock" />
+            <connect to="Converter_1" from="Company.Dev_Phone" />
+        </module>
+        <stock name="Money">
+            <eqn>16000000</eqn>
+            <inflow>Income</inflow>
+            <outflow>Salaries</outflow>
+            <non_negative />
+            <display x="132" y="249" color="blue" />
+        </stock>
+        <flow name="Salaries" access="input">
+            <non_negative />
+            <display x="132" y="310" color="blue">
+                <pts>
+                    <pt x="132" y="266" />
+                    <pt x="132" y="354" />
+                </pts>
+            </display>
+        </flow>
+        <stock name="Produce_Phone">
+            <eqn>0</eqn>
+            <inflow>Production_Rate</inflow>
+            <outflow>Deliver</outflow>
+            <conveyor>
+                <len>1/2</len>
+                <in_limit>30000</in_limit>
+            </conveyor>
+            <display x="264" y="174" color="blue">
+                <isee:story_val>453.113</isee:story_val>
+            </display>
+        </stock>
+        <flow name="Production_Rate">
+            <eqn>IF Clock &gt;= 12 THEN &#x0A;((3*Expected_Lifetime_Sales/24) - (Expected_Lifetime_Sales/1152)*(12 - (Clock-12))^2)&#x0A;ELSE&#x0A;0</eqn>
+            <non_negative />
+            <display x="195" y="178" color="blue">
+                <pts>
+                    <pt x="148" y="178" />
+                    <pt x="242" y="178" />
+                </pts>
+            </display>
+        </flow>
+        <stock name="Store_Stock" access="output">
+            <eqn>0</eqn>
+            <inflow>Deliver</inflow>
+            <outflow>Sale_Rate</outflow>
+            <non_negative />
+            <display x="361" y="178" color="blue" />
+        </stock>
+        <flow name="Deliver">
+            <eqn>0</eqn>
+            <non_negative />
+            <display x="312" y="172" color="blue">
+                <pts>
+                    <pt x="286" y="172" />
+                    <pt x="339" y="172" />
+                </pts>
+            </display>
+        </flow>
+        <flow name="Sale_Rate">
+            <eqn>IF Delay(Clock, 1/2) &gt;= 0.01 THEN &#x0A;(Expected_Lifetime_Sales*3 / 13824)*Delay(Clock, 1/2)^2&#x0A;ELSE&#x0A;0</eqn>
+            <non_negative />
+            <display x="360" y="260" color="blue">
+                <pts>
+                    <pt x="360" y="195" />
+                    <pt x="360" y="325" />
+                </pts>
+            </display>
+        </flow>
+        <aux name="Phone_Quality_1">
+            <eqn>Development_Budget/((11/12)*Development_Budget + (2*10^6))*Sale_price</eqn>
+            <display x="550" y="133" color="blue" />
+        </aux>
+        <aux name="Sale_price">
+            <eqn>600</eqn>
+            <display x="481" y="85" color="blue" />
+        </aux>
+        <aux name="Converter_1" access="input">
+            <display x="536" y="174" color="blue" />
+        </aux>
+        <aux name="Expected_Lifetime_Sales">
+            <eqn>Marked.Total_Yearly_Sales*Marked.Company_1_MarketShare*2</eqn>
+            <display x="459" y="228" color="blue" />
+        </aux>
+        <aux name="Total_Yearly_Sales" access="input">
+            <display x="545" y="270" color="blue" />
+        </aux>
+        <flow name="Income">
+            <eqn>Sale_Rate*Sale_price</eqn>
+            <non_negative />
+            <display x="185" y="251" color="blue">
+                <pts>
+                    <pt x="216" y="251" />
+                    <pt x="154" y="251" />
+                </pts>
+            </display>
+        </flow>
+        <stock name="Active_Users">
+            <eqn>0</eqn>
+            <inflow>Sale_Rate</inflow>
+            <conveyor>
+                <len>24</len>
+            </conveyor>
+            <display x="359" y="342" color="blue">
+                <isee:story_val>1</isee:story_val>
+            </display>
+        </stock>
+        <stock name="Sales_Last_Year" access="output">
+            <eqn>29000</eqn>
+            <inflow>Count</inflow>
+            <non_negative />
+            <display x="467" y="381" color="blue" />
+        </stock>
+        <flow name="Count">
+            <eqn>Sale_Rate</eqn>
+            <non_negative />
+            <display x="468" y="323" color="blue">
+                <pts>
+                    <pt x="468" y="283" />
+                    <pt x="468" y="364" />
+                </pts>
+            </display>
+        </flow>
+        <display page_width="612" page_height="792" isee:show_values_on_hover="true" isee:converter_size="medium" zoom="150" isee:animate_flows="true" isee:animate_stocks="true" isee:animate_converters="true" report_interval="0.0625" report_every_dt="true">
+            <connector x="239" y="72" uid="2" color="#FF007F">
+                <from>Clock</from>
+                <to>Employees_1</to>
+            </connector>
+            <connector x="488" y="90" uid="3" color="#FF007F">
+                <from>Sale_price</from>
+                <to>Phone_Quality_1</to>
+            </connector>
+            <connector x="252" y="73" uid="4" color="#FF007F">
+                <from>Clock</from>
+                <to>Production_Rate</to>
+            </connector>
+            <connector x="50" y="226" uid="5" color="#FF007F">
+                <from>Employees_1</from>
+                <to>Salaries</to>
+            </connector>
+            <connector x="548" y="95" uid="6" color="#FF007F">
+                <from>Development_Budget</from>
+                <to>Phone_Quality_1</to>
+            </connector>
+            <connector x="144" y="72" uid="7" color="#FF007F">
+                <from>Dev_Phone</from>
+                <to>Employees_1</to>
+            </connector>
+            <connector x="532" y="182" uid="8" color="#FF007F">
+                <from>Converter_1</from>
+                <to>Expected_Lifetime_Sales</to>
+            </connector>
+            <connector x="450" y="226" uid="9" color="#FF007F">
+                <from>Expected_Lifetime_Sales</from>
+                <to>Production_Rate</to>
+            </connector>
+            <connector x="536" y="270" uid="10" color="#FF007F">
+                <from>Total_Yearly_Sales</from>
+                <to>Expected_Lifetime_Sales</to>
+            </connector>
+            <connector x="283" y="57" uid="11" color="#FF007F">
+                <from>Clock</from>
+                <to>Sale_Rate</to>
+            </connector>
+            <connector x="450" y="231" uid="12" color="#FF007F">
+                <from>Expected_Lifetime_Sales</from>
+                <to>Sale_Rate</to>
+            </connector>
+            <connector x="352" y="264" uid="13" color="#FF007F">
+                <from>Sale_Rate</from>
+                <to>Income</to>
+            </connector>
+            <connector x="477" y="93" uid="14" color="#FF007F">
+                <from>Sale_price</from>
+                <to>Income</to>
+            </connector>
+            <connector x="368" y="265" uid="15" color="#FF007F">
+                <from>Sale_Rate</from>
+                <to>Count</to>
+            </connector>
+        </display>
+        <interface page_width="788" page_height="528">
+            <simulation_delay>0.1</simulation_delay>
+            <pages />
+        </interface>
+    </model>
+    <model name="Employees_1">
+        <aux name="Dev_team_salary">
+            <eqn>IF Converter_1 THEN&#x0A;1.2*10^5 / 12&#x0A;ELSE&#x0A;0</eqn>
+            <display x="68" y="36" color="blue" />
+        </aux>
+        <aux name="Worker_salary">
+            <eqn>IF Converter_2 THEN&#x0A;20160 / 12&#x0A;ELSE&#x0A;0</eqn>
+            <display x="67" y="83" color="blue" />
+        </aux>
+        <stock name="Dev_team">
+            <eqn>35</eqn>
+            <non_negative />
+            <display x="67" y="141" color="blue" />
+        </stock>
+        <stock name="Workers">
+            <eqn>139</eqn>
+            <non_negative />
+            <display x="68" y="193" color="blue" />
+        </stock>
+        <aux name="Salary" access="output">
+            <eqn>Dev_team*Dev_team_salary + Workers*Worker_salary</eqn>
+            <display x="145" y="149" color="blue" />
+        </aux>
+        <aux name="Converter_1" access="input">
+            <display x="200" y="36" color="blue" />
+        </aux>
+        <aux name="Converter_2" access="input">
+            <display x="197" y="81" color="blue" />
+        </aux>
+        <display page_width="612" page_height="792" isee:show_values_on_hover="true" isee:converter_size="medium" isee:animate_flows="true" isee:animate_stocks="true" isee:animate_converters="true" report_interval="0.0625" report_every_dt="true">
+            <connector x="188" y="81" uid="16" color="#FF007F">
+                <from>Converter_2</from>
+                <to>Worker_salary</to>
+            </connector>
+            <connector x="89" y="143" uid="17" color="#FF007F">
+                <from>Dev_team</from>
+                <to>Salary</to>
+            </connector>
+            <connector x="74" y="89" uid="18" color="#FF007F">
+                <from>Worker_salary</from>
+                <to>Salary</to>
+            </connector>
+            <connector x="191" y="38" uid="19" color="#FF007F">
+                <from>Converter_1</from>
+                <to>Dev_team_salary</to>
+            </connector>
+            <connector x="90" y="188" uid="20" color="#FF007F">
+                <from>Workers</from>
+                <to>Salary</to>
+            </connector>
+            <connector x="73" y="43" uid="21" color="#FF007F">
+                <from>Dev_team_salary</from>
+                <to>Salary</to>
+            </connector>
+        </display>
+        <interface page_width="788" page_height="528">
+            <simulation_delay>0.1</simulation_delay>
+            <pages />
+        </interface>
+    </model>
+    <model name="Marked">
+        <aux name="Total_Yearly_Sales" access="output">
+            <eqn>Company_2 + Company_1</eqn>
+            <isee:summing />
+            <display x="42" y="48" color="blue" />
+        </aux>
+        <aux name="Company_1">
+            <eqn>56294</eqn>
+            <display x="152" y="76" color="blue" />
+        </aux>
+        <aux name="Company_2" access="input">
+            <display x="146" y="23" color="blue" />
+        </aux>
+        <aux name="Company_1_MarketShare" access="output">
+            <eqn>Company_2 / Total_Yearly_Sales</eqn>
+            <display x="57" y="137" color="blue" />
+        </aux>
+        <aux name="Company_2_MarketShare" access="output">
+            <eqn>Company_1 / Total_Yearly_Sales</eqn>
+            <display x="176" y="138" color="blue" />
+        </aux>
+        <display page_width="612" page_height="792" isee:show_values_on_hover="true" isee:converter_size="medium" zoom="300" isee:animate_flows="true" isee:animate_stocks="true" isee:animate_converters="true" report_interval="0.0625" report_every_dt="true">
+            <connector x="161" y="77" uid="22" color="#FF007F">
+                <from>Company_1</from>
+                <to>Company_2_MarketShare</to>
+            </connector>
+            <connector x="49" y="53" uid="23" color="#FF007F">
+                <from>Total_Yearly_Sales</from>
+                <to>Company_2_MarketShare</to>
+            </connector>
+            <connector x="140" y="30" uid="24" color="#FF007F">
+                <from>Company_2</from>
+                <to>Company_1_MarketShare</to>
+            </connector>
+            <connector x="46" y="55" uid="25" color="#FF007F">
+                <from>Total_Yearly_Sales</from>
+                <to>Company_1_MarketShare</to>
+            </connector>
+        </display>
         <interface page_width="788" page_height="528">
             <simulation_delay>0.1</simulation_delay>
             <pages />
