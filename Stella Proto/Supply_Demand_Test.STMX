@@ -15,8 +15,8 @@
     </style>
     <sim_specs method="Euler" time_units="Time">
         <start>0</start>
-        <stop>12</stop>
-        <dt>0.25</dt>
+        <stop>120</stop>
+        <dt reciprocal="true">0.0625</dt>
     </sim_specs>
     <model_units />
     <isee:prefs layer="model" grid_width="20" grid_height="50" divide_by_zero_alert="true" hide_taskbar="true" show_module_prefix="true">
@@ -34,11 +34,11 @@
                 <len>1/2</len>
             </conveyor>
             <display x="175" y="253" color="blue">
-                <isee:story_val>217.221</isee:story_val>
+                <isee:story_val>453.125</isee:story_val>
             </display>
         </stock>
         <flow name="Production_Rate">
-            <eqn>IF Clock THEN&#x0A;((-3*Estimated_Units)/288)*(12-(Clock-12))^2 + ((3*Estimated_Units)/24)&#x0A;ELSE&#x0A;0</eqn>
+            <eqn>IF Clock THEN&#x0A;((-3*Estimated_Units)/3456)*(24-Clock)^2 + ((3*Estimated_Units)/24)&#x0A;ELSE&#x0A;0</eqn>
             <non_negative />
             <display x="113" y="254" color="blue">
                 <pts>
@@ -48,12 +48,14 @@
             </display>
         </flow>
         <aux name="Demand">
-            <eqn>0</eqn>
-            <display x="392" y="278" color="blue" />
+            <eqn>2*(29/360)*(Market_Price-1200)^2</eqn>
+            <display x="165" y="394" color="blue" />
         </aux>
         <stock name="Shop">
             <eqn>0</eqn>
             <inflow>Deliver</inflow>
+            <outflow>Sale_Rate</outflow>
+            <outflow>Empty_Store</outflow>
             <non_negative />
             <display x="262" y="254" color="blue" />
         </stock>
@@ -99,29 +101,180 @@
             </display>
         </flow>
         <aux name="Estimated_Units">
-            <eqn>(29000/600^2)*Market_Price^2</eqn>
+            <eqn>2*(29/360)*(Market_Price)^2</eqn>
             <display x="75" y="340" color="blue" />
         </aux>
-        <display page_width="571" page_height="818" isee:show_values_on_hover="true" isee:converter_size="medium" zoom="150" isee:animate_flows="true" isee:animate_stocks="true" isee:animate_converters="true" report_every_dt="true" scroll_y="88">
+        <stock name="Active_Users">
+            <eqn>0</eqn>
+            <inflow>Sale_Rate</inflow>
+            <outflow>Phone_Trashed</outflow>
+            <conveyor>
+                <len>48</len>
+            </conveyor>
+            <display x="258" y="415" color="blue">
+                <isee:story_val>0</isee:story_val>
+            </display>
+        </stock>
+        <flow name="Sale_Rate">
+            <eqn>((3*Demand)/13824)*Delay(Clock, 1/2)^2</eqn>
+            <non_negative />
+            <display x="262" y="334" color="blue">
+                <pts>
+                    <pt x="262" y="271" />
+                    <pt x="262" y="398" />
+                </pts>
+            </display>
+        </flow>
+        <flow name="Phone_Trashed">
+            <eqn>0</eqn>
+            <non_negative />
+            <display x="318" y="414" color="blue">
+                <pts>
+                    <pt x="280" y="414" />
+                    <pt x="356" y="414" />
+                </pts>
+            </display>
+        </flow>
+        <stock name="Money">
+            <eqn>0</eqn>
+            <inflow>Income</inflow>
+            <outflow>Expenses</outflow>
+            <outflow>Tax</outflow>
+            <display x="145" y="562" color="blue" />
+        </stock>
+        <flow name="Income">
+            <eqn>Market_Price*Sale_Rate</eqn>
+            <non_negative />
+            <display x="190" y="475" color="blue">
+                <pts>
+                    <pt x="226" y="475" />
+                    <pt x="154" y="475" />
+                    <pt x="154" y="545" />
+                </pts>
+            </display>
+        </flow>
+        <aux name="Tax_Per_Phone">
+            <eqn>0.5</eqn>
+            <display x="211" y="511" color="blue" />
+        </aux>
+        <flow name="Expenses">
+            <eqn>Deliver*Production_Cost</eqn>
+            <display x="76" y="558" color="blue">
+                <pts>
+                    <pt x="123" y="558" />
+                    <pt x="30" y="558" />
+                </pts>
+            </display>
+        </flow>
+        <aux name="Production_Cost">
+            <eqn>400</eqn>
+            <display x="76" y="487" color="blue" />
+        </aux>
+        <flow name="Tax">
+            <eqn>IF Phone_Trashed THEN&#x0A;Market_Price*Tax_Per_Phone*Phone_Trashed&#x0A;ELSE&#x0A;0</eqn>
+            <non_negative />
+            <display x="210" y="562" color="blue">
+                <pts>
+                    <pt x="167" y="562" />
+                    <pt x="254" y="562" />
+                </pts>
+            </display>
+        </flow>
+        <flow name="Empty_Store">
+            <eqn>IF Start_Clock THEN&#x0A;Shop/DT&#x0A;ELSE&#x0A;0</eqn>
+            <non_negative />
+            <display x="337" y="256" color="blue">
+                <pts>
+                    <pt x="284" y="256" />
+                    <pt x="390" y="256" />
+                </pts>
+            </display>
+        </flow>
+        <display page_width="571" page_height="818" page_cols="2" isee:show_values_on_hover="true" isee:converter_size="medium" zoom="150" isee:animate_flows="true" isee:animate_stocks="true" isee:animate_converters="true" report_interval="0.0625" report_every_dt="true" scroll_y="88">
             <connector x="150" y="143" uid="0" color="#FF007F">
                 <from>Clock</from>
                 <to>Start_Clock</to>
             </connector>
-            <connector x="75" y="386" uid="1" color="#FF007F">
-                <from>Market_Price</from>
-                <to>Estimated_Units</to>
-            </connector>
-            <connector x="76" y="330" uid="2" color="#FF007F">
+            <connector x="79" y="332" uid="1" color="#FF007F">
                 <from>Estimated_Units</from>
                 <to>Production_Rate</to>
             </connector>
-            <connector x="161" y="172" uid="3" color="#FF007F">
+            <connector x="161" y="172" uid="2" color="#FF007F">
                 <from>Clock</from>
                 <to>Production_Rate</to>
             </connector>
+            <connector x="194" y="141" uid="3" color="#FF007F">
+                <from>Clock</from>
+                <to>Sale_Rate</to>
+            </connector>
+            <connector x="84" y="393" uid="4" color="#FF007F">
+                <from>Market_Price</from>
+                <to>Demand</to>
+            </connector>
+            <connector x="172" y="388" uid="5" color="#FF007F">
+                <from>Demand</from>
+                <to>Sale_Rate</to>
+            </connector>
+            <connector x="254" y="341" uid="6" color="#FF007F">
+                <from>Sale_Rate</from>
+                <to>Income</to>
+            </connector>
+            <connector x="83" y="400" uid="7" color="#FF007F">
+                <from>Market_Price</from>
+                <to>Income</to>
+            </connector>
+            <connector x="317" y="424" uid="8" color="#FF007F">
+                <from>Phone_Trashed</from>
+                <to>Tax</to>
+            </connector>
+            <connector x="77" y="403" uid="9" color="#FF007F">
+                <from>Market_Price</from>
+                <to>Tax</to>
+            </connector>
+            <connector x="215" y="263" uid="10" color="#FF007F">
+                <from>Deliver</from>
+                <to>Expenses</to>
+            </connector>
+            <connector x="76" y="496" uid="11" color="#FF007F">
+                <from>Production_Cost</from>
+                <to>Expenses</to>
+            </connector>
+            <connector x="210" y="520" uid="12" color="#FF007F">
+                <from>Tax_Per_Phone</from>
+                <to>Tax</to>
+            </connector>
+            <connector x="72" y="386" uid="13" color="#FF007F">
+                <from>Market_Price</from>
+                <to>Estimated_Units</to>
+            </connector>
+            <connector x="134" y="162" uid="14" color="#FF007F">
+                <from>Start_Clock</from>
+                <to>Empty_Store</to>
+            </connector>
+            <connector x="284" y="265" uid="15" color="#FF007F">
+                <from>Shop</from>
+                <to>Empty_Store</to>
+            </connector>
+            <stacked_container x="484" y="346" height="282" width="492" visible_index="0" uid="16">
+                <graph type="time_series" title="Untitled" background="#FFFFC9" show_grid="false" numbers_on_plots="true" isee:use_five_segments="false" isee:date_time="-704790511" time_precision="2" from="0" to="120">
+                    <plot index="0" pen_width="1" color="blue" precision="0" show_y_axis="true">
+                        <entity name="Money" />
+                    </plot>
+                    <plot index="1" pen_width="1" color="red" precision="0" show_y_axis="true">
+                        <entity name="Shop" />
+                    </plot>
+                    <plot index="2" pen_width="1" color="fuchsia" precision="0" show_y_axis="true">
+                        <entity name="Demand" />
+                    </plot>
+                    <plot index="3" pen_width="1" color="#008F44" precision="0" show_y_axis="true">
+                        <entity name="Estimated_Units" />
+                    </plot>
+                </graph>
+            </stacked_container>
+            <pad_icon x="500" y="356" width="26" height="22" color="#008F44" label_side="bottom" label="Graph 1" type="graph" icon_of="16" />
         </display>
         <interface page_width="788" page_height="528">
-            <simulation_delay>0.1</simulation_delay>
+            <simulation_delay>0.1484</simulation_delay>
             <pages />
         </interface>
     </model>
