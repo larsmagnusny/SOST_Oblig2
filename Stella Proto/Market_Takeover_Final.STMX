@@ -1,0 +1,408 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<xmile version="1.0" level="3" xmlns="http://www.systemdynamics.org/XMILE" xmlns:isee="http://iseesystems.com/XMILE">
+    <header>
+        <smile version="1.0" namespace="std, isee">
+            <uses_conveyor />
+        </smile>
+        <name>Market_Takeover_Final</name>
+        <uuid>e7de958c-7164-4d57-99f8-ff73033bece5</uuid>
+        <vendor>isee systems, inc.</vendor>
+        <product version="10.0.4" lang="en">STELLA</product>
+    </header>
+    <style>
+        <model font-family="Arial" font-size="9" />
+        <interface font-family="Arial" font-size="9" />
+    </style>
+    <sim_specs method="Euler" time_units="Weeks">
+        <start>0</start>
+        <stop>960</stop>
+        <dt>0.25</dt>
+    </sim_specs>
+    <model_units />
+    <isee:prefs layer="model" grid_width="20" grid_height="50" divide_by_zero_alert="true" hide_taskbar="true" show_module_prefix="true">
+        <isee:window width="1904" height="981" />
+        <isee:security />
+        <isee:print_setup width="612" height="792" />
+    </isee:prefs>
+    <isee:equation_prefs order_by="module" />
+    <model>
+        <stock name="Inventory">
+            <eqn>0</eqn>
+            <inflow>supply</inflow>
+            <outflow>shipments</outflow>
+            <non_negative />
+            <display x="313" y="209" color="blue" />
+        </stock>
+        <flow name="shipments">
+            <eqn>Demand</eqn>
+            <non_negative />
+            <display x="382" y="208" color="blue" label_side="top" label_angle="85">
+                <pts>
+                    <pt x="335" y="208" />
+                    <pt x="430" y="208" />
+                </pts>
+            </display>
+        </flow>
+        <aux name="Demand">
+            <eqn>demand_price_schedule/48</eqn>
+            <display x="563" y="210" color="blue" />
+        </aux>
+        <aux name="demand_price_schedule">
+            <eqn>2*(TotalMarket*MarketShare_34)^2*(SQRT(price)-30)/(-60*(TotalMarket*MarketShare_34)+SQRT(4*600*(TotalMarket*MarketShare_34)^2))</eqn>
+            <display x="612" y="314" color="blue" />
+        </aux>
+        <stock name="price">
+            <eqn>600</eqn>
+            <inflow>Change_in_price</inflow>
+            <non_negative />
+            <display x="564" y="486" color="blue" />
+        </stock>
+        <aux name="desired_inventory">
+            <eqn>Demand</eqn>
+            <display x="417" y="294" color="blue" />
+        </aux>
+        <flow name="supply">
+            <eqn>IF Inventory &lt; supply_price_scedule/48 THEN&#x0A;IF supply_price_scedule &gt; Current_Production_Lines*30000 THEN&#x0A;Current_Production_Lines*30000/48&#x0A;ELSE&#x0A;supply_price_scedule/48&#x0A;ELSE&#x0A;0</eqn>
+            <non_negative />
+            <display x="244" y="214" color="blue">
+                <pts>
+                    <pt x="197" y="214" />
+                    <pt x="291" y="214" />
+                </pts>
+            </display>
+        </flow>
+        <aux name="inventory_ratio">
+            <eqn>Inventory/desired_inventory</eqn>
+            <display x="314" y="255" color="blue" />
+        </aux>
+        <aux name="supply_price_scedule">
+            <eqn>SQRT((price*(TotalMarket*MarketShare_34)^2)/(production_price*(3/2)))</eqn>
+            <display x="244" y="299" color="blue" />
+        </aux>
+        <flow name="Change_in_price">
+            <eqn>((desired_price)-price)/30</eqn>
+            <display x="469" y="480" color="blue" label_side="top" label_angle="85">
+                <pts>
+                    <pt x="396" y="480" />
+                    <pt x="542" y="480" />
+                </pts>
+            </display>
+        </flow>
+        <aux name="effect_on_price">
+            <eqn>inventory_ratio</eqn>
+            <gf>
+                <xscale min="0" max="1.5" />
+                <yscale min="0" max="2" />
+                <ypts>2,1.60634920634921,1.3206349206349199,1.0603174603174601,0.82539682539682502,0.60317460317460303,0.40000000000000002,0.241269841269841,0.095238095238095205,0</ypts>
+            </gf>
+            <display x="314" y="353" color="blue" />
+        </aux>
+        <aux name="desired_price">
+            <eqn>price*effect_on_price</eqn>
+            <display x="433" y="548" color="blue" label_side="top" label_angle="81" />
+        </aux>
+        <aux name="production_price">
+            <eqn>400</eqn>
+            <display x="189" y="378" color="blue" />
+        </aux>
+        <stock name="Active_Users">
+            <eqn>0</eqn>
+            <inflow>shipments</inflow>
+            <outflow>Phone_Trashed</outflow>
+            <conveyor>
+                <len>96</len>
+            </conveyor>
+            <display x="452" y="211" color="blue">
+                <isee:story_val>0</isee:story_val>
+            </display>
+        </stock>
+        <flow name="Phone_Trashed">
+            <eqn>0</eqn>
+            <non_negative />
+            <display x="453" y="147" color="blue">
+                <pts>
+                    <pt x="453" y="194" />
+                    <pt x="453" y="100" />
+                </pts>
+            </display>
+        </flow>
+        <stock name="Money">
+            <eqn>16000000</eqn>
+            <inflow>Income</inflow>
+            <outflow>Expenses</outflow>
+            <outflow>Build</outflow>
+            <display x="271" y="533" color="blue" />
+        </stock>
+        <flow name="Income">
+            <eqn>shipments*price</eqn>
+            <non_negative />
+            <display x="321" y="572" color="blue">
+                <pts>
+                    <pt x="377" y="572" />
+                    <pt x="266" y="572" />
+                    <pt x="266" y="550" />
+                </pts>
+            </display>
+        </flow>
+        <flow name="Expenses">
+            <eqn>production_price*supply+Phone_Trashed*price*(1/3)</eqn>
+            <non_negative />
+            <display x="278" y="461" color="blue">
+                <pts>
+                    <pt x="278" y="516" />
+                    <pt x="278" y="407" />
+                </pts>
+            </display>
+        </flow>
+        <stock name="TotalMarket">
+            <eqn>29000/0.34</eqn>
+            <inflow>Flow_1</inflow>
+            <non_negative />
+            <display x="766" y="503" color="blue" />
+        </stock>
+        <flow name="Flow_1">
+            <eqn>IF TotalMarket &lt; 9000000*0.80 THEN&#x0A;TotalMarket*1.05/(16*35)&#x0A;ELSE&#x0A;0</eqn>
+            <non_negative />
+            <display x="767" y="554" color="blue">
+                <pts>
+                    <pt x="767" y="589" />
+                    <pt x="767" y="520" />
+                </pts>
+            </display>
+        </flow>
+        <aux name="Needed_Production_Lines">
+            <eqn>ROUND((supply_price_scedule)/30000)+1</eqn>
+            <display x="310" y="129" color="blue" />
+        </aux>
+        <stock name="Build_Production_Line">
+            <eqn>0</eqn>
+            <inflow>Flow_2</inflow>
+            <outflow>Flow_3</outflow>
+            <conveyor>
+                <len>48</len>
+            </conveyor>
+            <display x="205" y="58" color="blue">
+                <isee:story_val>0</isee:story_val>
+            </display>
+        </stock>
+        <stock name="Current_Production_Lines">
+            <eqn>1</eqn>
+            <inflow>Flow_3</inflow>
+            <non_negative />
+            <display x="337" y="53" color="blue" />
+        </stock>
+        <flow name="Flow_2">
+            <eqn>IF Build_Production_Line+Current_Production_Lines &lt; Needed_Production_Lines THEN&#x0A;Needed_Production_Lines-Current_Production_Lines&#x0A;ELSE&#x0A;0&#x0A;</eqn>
+            <non_negative />
+            <display x="152" y="59" color="blue">
+                <pts>
+                    <pt x="121" y="59" />
+                    <pt x="183" y="59" />
+                </pts>
+            </display>
+        </flow>
+        <flow name="Flow_3">
+            <eqn>0</eqn>
+            <non_negative />
+            <display x="271" y="54" color="blue">
+                <pts>
+                    <pt x="227" y="54" />
+                    <pt x="315" y="54" />
+                </pts>
+            </display>
+        </flow>
+        <flow name="Build">
+            <eqn>Build_Production_Line*6000000 / 48</eqn>
+            <non_negative />
+            <display x="132" y="532" color="blue">
+                <pts>
+                    <pt x="249" y="532" />
+                    <pt x="16" y="532" />
+                </pts>
+            </display>
+        </flow>
+        <stock name="MarketShare_34">
+            <eqn>0.34</eqn>
+            <inflow>Flow_10</inflow>
+            <non_negative />
+            <display x="979" y="517" color="blue" />
+        </stock>
+        <aux name="Share_1">
+            <eqn>IF Start THEN&#x0A;0.34*(2/3)&#x0A;ELSE&#x0A;0.34</eqn>
+            <display x="902" y="433" color="blue" />
+        </aux>
+        <flow name="Flow_10">
+            <eqn>IF MarketShare_34 &lt; Share_1 THEN&#x0A;0.01&#x0A;ELSE&#x0A;-0.01</eqn>
+            <display x="903" y="520" color="blue">
+                <pts>
+                    <pt x="850" y="520" />
+                    <pt x="957" y="520" />
+                </pts>
+            </display>
+        </flow>
+        <aux name="Start">
+            <eqn>IF TIME &gt;= 5*12*4 THEN&#x0A;1&#x0A;ELSE&#x0A;0</eqn>
+            <display x="1082" y="451" color="blue" />
+        </aux>
+        <display page_width="612" page_height="792" page_cols="3" page_rows="2" isee:show_values_on_hover="true" isee:converter_size="medium" isee:animate_flows="true" isee:animate_stocks="true" isee:animate_converters="true" report_interval="0.25" report_every_dt="true">
+            <connector x="183" y="54" uid="0" color="#FF007F">
+                <from>Build_Production_Line</from>
+                <to>Flow_2</to>
+            </connector>
+            <connector x="381" y="217" uid="1" color="#FF007F">
+                <from>shipments</from>
+                <to>Income</to>
+            </connector>
+            <connector x="608" y="306" uid="2" color="#FF007F">
+                <from>demand_price_schedule</from>
+                <to>Demand</to>
+            </connector>
+            <connector x="580" y="468" uid="3" color="#FF007F">
+                <from>price</from>
+                <to>demand_price_schedule</to>
+            </connector>
+            <connector x="313" y="226" uid="4" color="#FF007F">
+                <from>Inventory</from>
+                <to>inventory_ratio</to>
+            </connector>
+            <connector x="238" y="221" uid="5" color="#FF007F">
+                <from>supply</from>
+                <to>Expenses</to>
+            </connector>
+            <connector x="314" y="58" uid="6" color="#FF007F">
+                <from>Current_Production_Lines</from>
+                <to>supply</to>
+            </connector>
+            <connector x="788" y="508" uid="7" color="#FF007F">
+                <from>TotalMarket</from>
+                <to>Flow_1</to>
+            </connector>
+            <connector x="408" y="294" uid="8" color="#FF007F">
+                <from>desired_inventory</from>
+                <to>inventory_ratio</to>
+            </connector>
+            <connector x="435" y="539" uid="9" color="#FF007F">
+                <from>desired_price</from>
+                <to>Change_in_price</to>
+            </connector>
+            <connector x="202" y="75" uid="10" color="#FF007F">
+                <from>Build_Production_Line</from>
+                <to>Build</to>
+            </connector>
+            <connector x="544" y="470" uid="11" color="#FF007F">
+                <from>price</from>
+                <to>Change_in_price</to>
+            </connector>
+            <connector x="301" y="128" uid="12" color="#FF007F">
+                <from>Needed_Production_Lines</from>
+                <to>Flow_2</to>
+            </connector>
+            <connector x="314" y="264" uid="13" color="#FF007F">
+                <from>inventory_ratio</from>
+                <to>effect_on_price</to>
+            </connector>
+            <connector x="247" y="291" uid="14" color="#FF007F">
+                <from>supply_price_scedule</from>
+                <to>Needed_Production_Lines</to>
+            </connector>
+            <connector x="244" y="290" uid="15" color="#FF007F">
+                <from>supply_price_scedule</from>
+                <to>supply</to>
+            </connector>
+            <connector x="455" y="154" uid="16" color="#FF007F">
+                <from>Phone_Trashed</from>
+                <to>Expenses</to>
+            </connector>
+            <connector x="194" y="371" uid="17" color="#FF007F">
+                <from>production_price</from>
+                <to>supply_price_scedule</to>
+            </connector>
+            <connector x="190" y="388" uid="18" color="#FF007F">
+                <from>production_price</from>
+                <to>Expenses</to>
+            </connector>
+            <connector x="547" y="504" uid="19" color="#FF007F">
+                <from>price</from>
+                <to>Income</to>
+            </connector>
+            <connector x="744" y="491" uid="20" color="#FF007F">
+                <from>TotalMarket</from>
+                <to>demand_price_schedule</to>
+            </connector>
+            <connector x="543" y="493" uid="21" color="#FF007F">
+                <from>price</from>
+                <to>Expenses</to>
+            </connector>
+            <connector x="744" y="494" uid="22" color="#FF007F">
+                <from>TotalMarket</from>
+                <to>supply_price_scedule</to>
+            </connector>
+            <connector x="542" y="482" uid="23" color="#FF007F">
+                <from>price</from>
+                <to>supply_price_scedule</to>
+            </connector>
+            <connector x="291" y="194" uid="24" color="#FF007F">
+                <from>Inventory</from>
+                <to>supply</to>
+            </connector>
+            <connector x="314" y="362" uid="25" color="#FF007F">
+                <from>effect_on_price</from>
+                <to>desired_price</to>
+            </connector>
+            <connector x="557" y="216" uid="26" color="#FF007F">
+                <from>Demand</from>
+                <to>shipments</to>
+            </connector>
+            <connector x="320" y="36" uid="27" color="#FF007F">
+                <from>Current_Production_Lines</from>
+                <to>Flow_2</to>
+            </connector>
+            <connector x="542" y="497" uid="28" color="#FF007F">
+                <from>price</from>
+                <to>desired_price</to>
+            </connector>
+            <connector x="560" y="220" uid="29" color="#FF007F">
+                <from>Demand</from>
+                <to>desired_inventory</to>
+            </connector>
+            <connector x="959" y="532" uid="30" color="#FF007F">
+                <from>MarketShare_34</from>
+                <to>supply_price_scedule</to>
+            </connector>
+            <connector x="1073" y="450" uid="31" color="#FF007F">
+                <from>Start</from>
+                <to>Share_1</to>
+            </connector>
+            <connector x="902" y="442" uid="32" color="#FF007F">
+                <from>Share_1</from>
+                <to>Flow_10</to>
+            </connector>
+            <connector x="966" y="500" uid="33" color="#FF007F">
+                <from>MarketShare_34</from>
+                <to>Flow_10</to>
+            </connector>
+            <connector x="966" y="501" uid="34" color="#FF007F">
+                <from>MarketShare_34</from>
+                <to>demand_price_schedule</to>
+            </connector>
+            <stacked_container x="695" y="49" height="282" width="492" visible_index="0" uid="35">
+                <graph type="time_series" title="Untitled" background="#FFFFC9" show_grid="false" numbers_on_plots="true" isee:use_five_segments="false" isee:date_time="-704563418" time_precision="2" from="0" to="960">
+                    <plot index="0" pen_width="1" color="red" precision="0" show_y_axis="true">
+                        <entity name="Share_1" />
+                    </plot>
+                    <plot index="1" pen_width="1" color="fuchsia" precision="0" show_y_axis="true">
+                        <entity name="Money" />
+                    </plot>
+                    <plot index="2" pen_width="1" color="#FF7F00" precision="0" show_y_axis="true">
+                        <entity name="price" />
+                    </plot>
+                </graph>
+            </stacked_container>
+            <pad_icon x="931" y="391" width="26" height="22" color="#008F44" label_side="bottom" label="Graph 1" type="graph" icon_of="35" />
+        </display>
+        <interface page_width="788" page_height="528">
+            <simulation_delay>0</simulation_delay>
+            <pages />
+        </interface>
+    </model>
+</xmile>
