@@ -1,0 +1,314 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<xmile version="1.0" level="3" xmlns="http://www.systemdynamics.org/XMILE" xmlns:isee="http://iseesystems.com/XMILE">
+    <header>
+        <smile version="1.0" namespace="std, isee">
+            <uses_conveyor />
+        </smile>
+        <name>Supply_Demand_Test3</name>
+        <uuid>3055cecb-fe4b-478d-b686-5f6fbeec6191</uuid>
+        <vendor>isee systems, inc.</vendor>
+        <product version="10.0.4" lang="en">STELLA</product>
+    </header>
+    <style>
+        <model font-family="Arial" font-size="9" />
+        <interface font-family="Arial" font-size="9" />
+    </style>
+    <sim_specs method="Euler" time_units="Time">
+        <start>0</start>
+        <stop>120</stop>
+        <dt reciprocal="true">0.0625</dt>
+    </sim_specs>
+    <model_units />
+    <isee:prefs layer="model" grid_width="20" grid_height="50" divide_by_zero_alert="true" hide_taskbar="true" show_module_prefix="true">
+        <isee:window width="1904" height="981" />
+        <isee:security />
+        <isee:print_setup width="571" height="818" />
+    </isee:prefs>
+    <isee:equation_prefs order_by="module" />
+    <model>
+        <aux name="RPD">
+            <eqn>RANDOM(580, 620, TIME)</eqn>
+            <display x="367" y="229" color="blue" />
+        </aux>
+        <stock name="Stock">
+            <eqn>0</eqn>
+            <inflow>Deliver</inflow>
+            <outflow>Sale_Rate</outflow>
+            <non_negative />
+            <display x="302" y="402" color="blue" />
+        </stock>
+        <aux name="Demand">
+            <eqn>IF CurrentPrice &lt; 1400 THEN&#x0A;(((-2*RPD+SQRT(0.34*4*RPD^2))/(2*RPD^2))*CurrentPrice+1)^2&#x0A;ELSE&#x0A;0</eqn>
+            <display x="363" y="298" color="blue" />
+        </aux>
+        <flow name="Sale_Rate">
+            <eqn>(Market*Demand)/12</eqn>
+            <non_negative />
+            <display x="385" y="401" color="blue">
+                <pts>
+                    <pt x="324" y="401" />
+                    <pt x="447" y="401" />
+                </pts>
+            </display>
+        </flow>
+        <stock name="Market">
+            <eqn>29000/0.34</eqn>
+            <inflow>Flow_2</inflow>
+            <non_negative />
+            <display x="298" y="324" color="blue" />
+        </stock>
+        <stock name="Active_Users">
+            <eqn>0</eqn>
+            <inflow>Sale_Rate</inflow>
+            <outflow>Phone_Trashed</outflow>
+            <conveyor>
+                <len>24</len>
+            </conveyor>
+            <display x="468" y="401" color="blue">
+                <isee:story_val>0</isee:story_val>
+            </display>
+        </stock>
+        <flow name="Phone_Trashed">
+            <eqn>0</eqn>
+            <non_negative />
+            <display x="527" y="401" color="blue">
+                <pts>
+                    <pt x="490" y="401" />
+                    <pt x="565" y="401" />
+                </pts>
+            </display>
+        </flow>
+        <stock name="Competitors_Users">
+            <eqn>0</eqn>
+            <inflow>C_Sale_Rate</inflow>
+            <outflow>C_Phone_Trashed</outflow>
+            <conveyor>
+                <len>24</len>
+            </conveyor>
+            <display x="470" y="478" color="blue">
+                <isee:story_val>0</isee:story_val>
+            </display>
+        </stock>
+        <flow name="C_Sale_Rate">
+            <eqn>IF Demand THEN&#x0A;(Sale_Rate/Demand)*(1-Demand)&#x0A;ELSE&#x0A;Market/12</eqn>
+            <non_negative />
+            <display x="390" y="479" color="blue">
+                <pts>
+                    <pt x="332" y="479" />
+                    <pt x="448" y="479" />
+                </pts>
+            </display>
+        </flow>
+        <flow name="C_Phone_Trashed">
+            <eqn>0</eqn>
+            <non_negative />
+            <display x="534" y="477" color="blue">
+                <pts>
+                    <pt x="492" y="477" />
+                    <pt x="577" y="477" />
+                </pts>
+            </display>
+        </flow>
+        <aux name="Production_Cost">
+            <eqn>400</eqn>
+            <display x="497" y="309" color="blue" />
+        </aux>
+        <stock name="Money">
+            <eqn>16000000</eqn>
+            <inflow>Income</inflow>
+            <outflow>Flow_1</outflow>
+            <outflow>Flow_3</outflow>
+            <display x="586" y="294" color="blue" />
+        </stock>
+        <flow name="Income">
+            <eqn>(CurrentPrice)*Sale_Rate</eqn>
+            <non_negative />
+            <display x="587" y="338" color="blue">
+                <pts>
+                    <pt x="587" y="366" />
+                    <pt x="587" y="311" />
+                </pts>
+            </display>
+        </flow>
+        <aux name="TotalMarket">
+            <eqn>Active_Users + Competitors_Users</eqn>
+            <isee:summing />
+            <display x="469" y="528" color="blue" />
+        </aux>
+        <aux name="MarketShare">
+            <eqn>IF TotalMarket THEN&#x0A;Active_Users / TotalMarket&#x0A;ELSE&#x0A;0</eqn>
+            <display x="424" y="570" color="blue" />
+        </aux>
+        <stock name="Production_Line">
+            <eqn>0</eqn>
+            <inflow>Production_Rate</inflow>
+            <outflow>Deliver</outflow>
+            <conveyor>
+                <len>1</len>
+            </conveyor>
+            <display x="206" y="404" color="blue">
+                <isee:story_val>0</isee:story_val>
+            </display>
+        </stock>
+        <flow name="Deliver">
+            <eqn>0</eqn>
+            <non_negative />
+            <display x="254" y="404" color="blue">
+                <pts>
+                    <pt x="228" y="404" />
+                    <pt x="280" y="404" />
+                </pts>
+            </display>
+        </flow>
+        <flow name="Production_Rate">
+            <eqn>Supply/12</eqn>
+            <non_negative />
+            <display x="149" y="402" color="blue">
+                <pts>
+                    <pt x="114" y="402" />
+                    <pt x="184" y="402" />
+                </pts>
+            </display>
+        </flow>
+        <aux name="Supply">
+            <eqn>SQRT((CurrentPrice*(Market*Demand)^2)/(Production_Cost + (3/2)*Production_Cost))</eqn>
+            <display x="147" y="300" color="blue" />
+        </aux>
+        <flow name="Flow_1">
+            <eqn>Phone_Trashed*CurrentPrice*0.50</eqn>
+            <non_negative />
+            <display x="683" y="277" color="blue">
+                <pts>
+                    <pt x="608" y="277" />
+                    <pt x="758" y="277" />
+                </pts>
+            </display>
+        </flow>
+        <flow name="Flow_2">
+            <eqn>IF Market &lt;= 9000000*0.80 THEN&#x0A;Market*1.05/60&#x0A;ELSE&#x0A;0</eqn>
+            <non_negative />
+            <display x="245" y="324" color="blue">
+                <pts>
+                    <pt x="215" y="324" />
+                    <pt x="276" y="324" />
+                </pts>
+            </display>
+        </flow>
+        <flow name="Flow_3">
+            <eqn>Production_Cost*Production_Rate</eqn>
+            <non_negative />
+            <display x="686" y="311" color="blue">
+                <pts>
+                    <pt x="608" y="311" />
+                    <pt x="764" y="311" />
+                </pts>
+            </display>
+        </flow>
+        <aux name="CurrentPrice">
+            <eqn>Production_Cost*(3/2)</eqn>
+            <display x="444" y="238" color="blue" />
+        </aux>
+        <display page_width="571" page_height="818" page_cols="3" isee:show_values_on_hover="true" isee:converter_size="medium" zoom="150" isee:animate_flows="true" isee:animate_stocks="true" isee:animate_converters="true" report_interval="0.0625" report_every_dt="true" scroll_x="104" scroll_y="88">
+            <connector x="367" y="238" uid="0" color="#FF007F">
+                <from>RPD</from>
+                <to>Demand</to>
+            </connector>
+            <connector x="440" y="245" uid="1" color="#FF007F">
+                <from>CurrentPrice</from>
+                <to>Demand</to>
+            </connector>
+            <connector x="365" y="307" uid="2" color="#FF007F">
+                <from>Demand</from>
+                <to>Sale_Rate</to>
+            </connector>
+            <connector x="320" y="337" uid="3" color="#FF007F">
+                <from>Market</from>
+                <to>Sale_Rate</to>
+            </connector>
+            <connector x="360" y="306" uid="4" color="#FF007F">
+                <from>Demand</from>
+                <to>C_Sale_Rate</to>
+            </connector>
+            <connector x="386" y="410" uid="5" color="#FF007F">
+                <from>Sale_Rate</from>
+                <to>C_Sale_Rate</to>
+            </connector>
+            <connector x="390" y="396" uid="6" color="#FF007F">
+                <from>Sale_Rate</from>
+                <to>Income</to>
+            </connector>
+            <connector x="493" y="301" uid="7" color="#FF007F">
+                <from>Production_Cost</from>
+                <to>CurrentPrice</to>
+            </connector>
+            <connector x="465" y="535" uid="8" color="#FF007F">
+                <from>TotalMarket</from>
+                <to>MarketShare</to>
+            </connector>
+            <connector x="454" y="418" uid="9" color="#FF007F">
+                <from>Active_Users</from>
+                <to>MarketShare</to>
+            </connector>
+            <connector x="435" y="240" uid="10" color="#FF007F">
+                <from>CurrentPrice</from>
+                <to>Supply</to>
+            </connector>
+            <connector x="489" y="304" uid="11" color="#FF007F">
+                <from>Production_Cost</from>
+                <to>Supply</to>
+            </connector>
+            <connector x="147" y="309" uid="12" color="#FF007F">
+                <from>Supply</from>
+                <to>Production_Rate</to>
+            </connector>
+            <connector x="453" y="235" uid="13" color="#FF007F">
+                <from>CurrentPrice</from>
+                <to>Income</to>
+            </connector>
+            <connector x="453" y="238" uid="14" color="#FF007F">
+                <from>CurrentPrice</from>
+                <to>Flow_1</to>
+            </connector>
+            <connector x="310" y="341" uid="15" color="#FF007F">
+                <from>Market</from>
+                <to>C_Sale_Rate</to>
+            </connector>
+            <connector x="536" y="402" uid="16" color="#FF007F">
+                <from>Phone_Trashed</from>
+                <to>Flow_1</to>
+            </connector>
+            <connector x="279" y="307" uid="17" color="#FF007F">
+                <from>Market</from>
+                <to>Flow_2</to>
+            </connector>
+            <connector x="283" y="307" uid="18" color="#FF007F">
+                <from>Market</from>
+                <to>Supply</to>
+            </connector>
+            <connector x="354" y="297" uid="19" color="#FF007F">
+                <from>Demand</from>
+                <to>Supply</to>
+            </connector>
+            <connector x="149" y="411" uid="20" color="#FF007F">
+                <from>Production_Rate</from>
+                <to>Flow_3</to>
+            </connector>
+            <connector x="506" y="308" uid="21" color="#FF007F">
+                <from>Production_Cost</from>
+                <to>Flow_3</to>
+            </connector>
+            <stacked_container x="838" y="368" height="282" width="492" visible_index="0" uid="22">
+                <graph type="time_series" title="Untitled" background="#FFFFC9" show_grid="false" numbers_on_plots="true" isee:use_five_segments="false" isee:date_time="-704639142" time_precision="2" from="0" to="120">
+                    <plot index="0" pen_width="1" color="blue" precision="0" show_y_axis="true">
+                        <entity name="Money" />
+                    </plot>
+                </graph>
+            </stacked_container>
+            <pad_icon x="854" y="380" width="26" height="22" color="#008F44" label_side="bottom" label="Graph 1" type="graph" icon_of="22" />
+        </display>
+        <interface page_width="788" page_height="528">
+            <simulation_delay>0.1</simulation_delay>
+            <pages />
+        </interface>
+    </model>
+</xmile>
