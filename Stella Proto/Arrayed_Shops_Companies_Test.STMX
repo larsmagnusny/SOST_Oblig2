@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<xmile version="1.0" level="3" xmlns="http://www.systemdynamics.org/XMILE" xmlns:isee="http://iseesystems.com/XMILE">
+    <header>
+        <smile version="1.0" namespace="std, isee">
+            <uses_arrays>1</uses_arrays>
+            <uses_conveyor />
+            <uses_submodels />
+        </smile>
+        <name>Arrayed_Shops_Companies_Test</name>
+        <uuid>a4f65574-2992-4c06-aa7c-81094830d6ee</uuid>
+        <vendor>isee systems, inc.</vendor>
+        <product version="10.0.4" lang="en">STELLA</product>
+    </header>
+    <style>
+        <model font-family="Arial" font-size="9" />
+        <interface font-family="Arial" font-size="9" />
+    </style>
+    <sim_specs method="Euler" time_units="Time">
+        <start>0</start>
+        <stop>120</stop>
+        <dt>0.25</dt>
+    </sim_specs>
+    <dimensions>
+        <dim name="Phone_Company" size="2" />
+    </dimensions>
+    <model_units />
+    <isee:prefs layer="model" grid_width="20" grid_height="50" divide_by_zero_alert="true" hide_taskbar="true" show_module_prefix="true">
+        <isee:window width="1920" height="997" />
+        <isee:security />
+        <isee:print_setup width="571" height="818" />
+    </isee:prefs>
+    <isee:equation_prefs order_by="module" />
+    <model>
+        <module name="Shop" url="C:\Users\Lars\Google Drive\Systemtenking Oppgaver\Oblig 2\Stella Proto\Modules\Shop.itmx">
+            <display x="148" y="307" color="blue" label_side="left" label_angle="174">
+                <image size_to_parent="true" width="512" height="512">C:/Users/Lars/Google Drive/Systemtenking Oppgaver/Oblig 2/Stella Proto/Icons/33701.jpg</image>
+            </display>
+            <connect to="D_price" from="Dhors_Co.Price" />
+            <connect to="Comp1" from="Dhors_Co.Supply" />
+            <connect to="Usual_Cust" from="Market.Usual_Customers" />
+            <connect to="Other_Price" from="Other_Comp.Price" />
+            <connect to="Other_Supply" from="Other_Comp.Supply" />
+        </module>
+        <module name="Dhors_Co" url="C:\Users\Lars\Google Drive\Systemtenking Oppgaver\Oblig 2\Stella Proto\Modules\Dhors Co.itmx">
+            <display x="201" y="159" color="blue">
+                <image size_to_parent="true" width="200" height="200">C:/Users/Lars/Google Drive/Systemtenking Oppgaver/Oblig 2/Stella Proto/Icons/88781-200.jpg</image>
+            </display>
+            <connect to="Inventory_Ratio" from="Shop.Shop_Stock" />
+            <connect to="Total_Market" from="Market.Usual_Customers" />
+            <connect to="Sales" from="Shop.Sales" />
+        </module>
+        <module name="Market" url="C:\Users\Lars\Google Drive\Systemtenking Oppgaver\Oblig 2\Stella Proto\Modules\Market.itmx">
+            <display x="267" y="309" color="blue" label_side="right" label_angle="2">
+                <image size_to_parent="true" width="512" height="512">C:/Users/Lars/Google Drive/Systemtenking Oppgaver/Oblig 2/Stella Proto/Icons/user1.jpg</image>
+            </display>
+            <connect to="Prices" from="Shop.Prices" />
+        </module>
+        <module name="Other_Comp" url="C:\Users\Lars\Google Drive\Systemtenking Oppgaver\Oblig 2\Stella Proto\Modules\Other Comp.itmx">
+            <display x="284" y="158" color="blue">
+                <image size_to_parent="true" width="200" height="200">C:/Users/Lars/Google Drive/Systemtenking Oppgaver/Oblig 2/Stella Proto/Icons/88781-200.jpg</image>
+            </display>
+            <connect to="Inventory_Ratio" from="Shop.Shop_Stock" />
+            <connect to="Total_Market" from="Market.Usual_Customers" />
+            <connect to="Sales" from="Shop.Sales" />
+        </module>
+        <display page_width="571" page_height="818" isee:show_values_on_hover="true" isee:converter_size="medium" zoom="150" isee:animate_flows="true" isee:animate_stocks="true" isee:animate_converters="true" report_interval="0.25" report_every_dt="true">
+            <connector x="159" y="287" uid="0" color="#FF007F">
+                <from>Shop</from>
+                <to>Dhors_Co</to>
+            </connector>
+            <connector x="242" y="314" uid="1" color="#FF007F">
+                <from>Market</from>
+                <to>Shop</to>
+            </connector>
+            <connector x="273" y="178" uid="2" color="#FF007F">
+                <from>Other_Comp</from>
+                <to>Shop</to>
+            </connector>
+            <connector x="190" y="179" uid="3" color="#FF007F">
+                <from>Dhors_Co</from>
+                <to>Shop</to>
+            </connector>
+            <connector x="273" y="289" uid="4" color="#FF007F">
+                <from>Market</from>
+                <to>Other_Comp</to>
+            </connector>
+            <connector x="262" y="289" uid="5" color="#FF007F">
+                <from>Market</from>
+                <to>Dhors_Co</to>
+            </connector>
+            <connector x="173" y="302" uid="6" color="#FF007F">
+                <from>Shop</from>
+                <to>Market</to>
+            </connector>
+            <connector x="168" y="287" uid="7" color="#FF007F">
+                <from>Shop</from>
+                <to>Other_Comp</to>
+            </connector>
+        </display>
+        <interface page_width="788" page_height="528">
+            <simulation_delay>0.1</simulation_delay>
+            <pages />
+        </interface>
+    </model>
+</xmile>

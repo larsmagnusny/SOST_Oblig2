@@ -1,0 +1,203 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<xmile version="1.0" level="3" xmlns="http://www.systemdynamics.org/XMILE" xmlns:isee="http://iseesystems.com/XMILE">
+    <header>
+        <smile version="1.0" namespace="std, isee">
+            <uses_arrays>1</uses_arrays>
+            <uses_conveyor />
+        </smile>
+        <name>Shop</name>
+        <uuid>a4f65574-2992-4c06-aa7c-81094830d6ee</uuid>
+        <vendor>isee systems, inc.</vendor>
+        <product version="10.0.4" lang="en">STELLA</product>
+    </header>
+    <style>
+        <model font-family="Arial" font-size="9pt">
+            <color>blue</color>
+            <background>white</background>
+            <font-style>normal</font-style>
+            <font-weight>normal</font-weight>
+            <text-decoration>none</text-decoration>
+            <text-align>center</text-align>
+            <text-background>white</text-background>
+            <font-color>blue</font-color>
+            <padding>2</padding>
+            <border-color>black</border-color>
+            <border-width>1</border-width>
+            <border-style>none</border-style>
+        </model>
+        <stock label_side="top">
+            <label_angle>0</label_angle>
+            <size>medium</size>
+        </stock>
+        <flow label_side="bottom">
+            <label_angle>0</label_angle>
+        </flow>
+        <module>
+            <label_side>center</label_side>
+            <label_angle>0</label_angle>
+            <size>medium</size>
+        </module>
+        <aux label_side="bottom">
+            <label_angle>0</label_angle>
+            <size>medium</size>
+        </aux>
+        <connector color="#FF007F" />
+        <text_box text-align="left">
+            <font-color>black</font-color>
+        </text_box>
+    </style>
+    <sim_specs method="Euler" time_units="time">
+        <start>0</start>
+        <stop>12</stop>
+        <dt>0.25</dt>
+    </sim_specs>
+    <dimensions>
+        <dim name="Phone_Company" size="2" />
+    </dimensions>
+    <model_units />
+    <model name="Shop">
+        <stock name="Shop_Stock" access="output">
+            <dimensions>
+                <dim name="Phone_Company" />
+            </dimensions>
+            <eqn>0</eqn>
+            <inflow>Add</inflow>
+            <outflow>Sales</outflow>
+            <non_negative />
+            <display x="209" y="162" color="blue" />
+        </stock>
+        <array name="Add">
+            <dimensions>
+                <dim name="Phone_Company" />
+            </dimensions>
+            <flow subscript="1">
+                <eqn>Dhors_Co.Supply/12</eqn>
+            </flow>
+            <flow subscript="2">
+                <eqn>Other_Supply/12</eqn>
+            </flow>
+            <non_negative />
+            <display x="131" y="162" color="blue">
+                <pts>
+                    <pt x="75" y="162" />
+                    <pt x="187" y="162" />
+                </pts>
+            </display>
+        </array>
+        <flow name="Sales" access="output">
+            <dimensions>
+                <dim name="Phone_Company" />
+            </dimensions>
+            <eqn>Demands/12</eqn>
+            <non_negative />
+            <display x="290" y="164" color="blue">
+                <pts>
+                    <pt x="231" y="164" />
+                    <pt x="349" y="164" />
+                </pts>
+            </display>
+        </flow>
+        <aux name="Comp1" access="input">
+            <display x="78" y="95" color="blue" />
+        </aux>
+        <stock name="Active_Users">
+            <dimensions>
+                <dim name="Phone_Company" />
+            </dimensions>
+            <eqn>0</eqn>
+            <inflow>Sales</inflow>
+            <outflow>Phone_Trashed</outflow>
+            <conveyor>
+                <len>24</len>
+            </conveyor>
+            <display x="371" y="169" color="blue" />
+        </stock>
+        <array name="Demands">
+            <dimensions>
+                <dim name="Phone_Company" />
+            </dimensions>
+            <aux subscript="1">
+                <eqn>2*(Market.Usual_Customers[1])^2*(SQRT(Prices[1])-30)/(-60*(Market.Usual_Customers[1])+SQRT(4*600*(Market.Usual_Customers[1])^2))</eqn>
+            </aux>
+            <aux subscript="2">
+                <eqn>2*(Market.Usual_Customers[2])^2*(SQRT(Prices[2])-30)/(-60*(Market.Usual_Customers[2])+SQRT(4*600*(Market.Usual_Customers[2])^2))</eqn>
+            </aux>
+            <display x="290" y="108" color="blue" />
+        </array>
+        <flow name="Phone_Trashed">
+            <dimensions>
+                <dim name="Phone_Company" />
+            </dimensions>
+            <eqn>0</eqn>
+            <non_negative />
+            <display x="454" y="169" color="blue">
+                <pts>
+                    <pt x="393" y="169" />
+                    <pt x="516" y="169" />
+                </pts>
+            </display>
+        </flow>
+        <aux name="Usual_Cust" access="input">
+            <dimensions>
+                <dim name="Phone_Company" />
+            </dimensions>
+            <display x="290" y="52" color="blue" />
+        </aux>
+        <array name="Prices" access="output">
+            <dimensions>
+                <dim name="Phone_Company" />
+            </dimensions>
+            <aux subscript="1">
+                <eqn>Dhors_Co.Price</eqn>
+            </aux>
+            <aux subscript="2">
+                <eqn>Other_Comp.Price</eqn>
+            </aux>
+            <display x="363" y="106" color="blue" />
+        </array>
+        <aux name="D_price" access="input">
+            <display x="418" y="54" color="blue" />
+        </aux>
+        <aux name="Other_Price" access="input">
+            <eqn>600</eqn>
+            <display x="424" y="103" color="blue" />
+        </aux>
+        <aux name="Other_Supply" access="input">
+            <display x="157" y="95" color="blue" />
+        </aux>
+        <display page_width="571" page_height="818" isee:show_values_on_hover="true" isee:converter_size="medium" zoom="150" isee:animate_flows="true" isee:animate_stocks="true" isee:animate_converters="true" report_interval="0.25" report_every_dt="true">
+            <connector x="154" y="103" uid="56" color="#FF007F">
+                <from>Other_Supply</from>
+                <to>Add</to>
+            </connector>
+            <connector x="80" y="104" uid="57" color="#FF007F">
+                <from>Comp1</from>
+                <to>Add</to>
+            </connector>
+            <connector x="291" y="61" uid="58" color="#FF007F">
+                <from>Usual_Cust</from>
+                <to>Demands</to>
+            </connector>
+            <connector x="415" y="105" uid="59" color="#FF007F">
+                <from>Other_Price</from>
+                <to>Prices</to>
+            </connector>
+            <connector x="411" y="60" uid="60" color="#FF007F">
+                <from>D_price</from>
+                <to>Prices</to>
+            </connector>
+            <connector x="354" y="108" uid="61" color="#FF007F">
+                <from>Prices</from>
+                <to>Demands</to>
+            </connector>
+            <connector x="290" y="117" uid="62" color="#FF007F">
+                <from>Demands</from>
+                <to>Sales</to>
+            </connector>
+        </display>
+        <interface page_width="788" page_height="528">
+            <simulation_delay>0.1</simulation_delay>
+            <pages />
+        </interface>
+    </model>
+</xmile>

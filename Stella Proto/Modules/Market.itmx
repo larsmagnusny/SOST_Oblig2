@@ -1,0 +1,177 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<xmile version="1.0" level="3" xmlns="http://www.systemdynamics.org/XMILE" xmlns:isee="http://iseesystems.com/XMILE">
+    <header>
+        <smile version="1.0" namespace="std, isee">
+            <uses_arrays>1</uses_arrays>
+        </smile>
+        <name>Market</name>
+        <uuid>33453a56-4b11-4f5f-95e0-8e2a4bacf9d0</uuid>
+        <vendor>isee systems, inc.</vendor>
+        <product version="10.0.4" lang="en">STELLA</product>
+    </header>
+    <style>
+        <model font-family="Arial" font-size="9pt">
+            <color>blue</color>
+            <background>white</background>
+            <font-style>normal</font-style>
+            <font-weight>normal</font-weight>
+            <text-decoration>none</text-decoration>
+            <text-align>center</text-align>
+            <text-background>white</text-background>
+            <font-color>blue</font-color>
+            <padding>2</padding>
+            <border-color>black</border-color>
+            <border-width>1</border-width>
+            <border-style>none</border-style>
+        </model>
+        <stock label_side="top">
+            <label_angle>0</label_angle>
+            <size>medium</size>
+        </stock>
+        <flow label_side="bottom">
+            <label_angle>0</label_angle>
+        </flow>
+        <module>
+            <label_side>center</label_side>
+            <label_angle>0</label_angle>
+            <size>medium</size>
+        </module>
+        <aux label_side="bottom">
+            <label_angle>0</label_angle>
+            <size>medium</size>
+        </aux>
+        <connector color="#FF007F" />
+        <text_box text-align="left">
+            <font-color>black</font-color>
+        </text_box>
+    </style>
+    <sim_specs method="Euler" time_units="time">
+        <start>0</start>
+        <stop>12</stop>
+        <dt>0.25</dt>
+    </sim_specs>
+    <dimensions>
+        <dim name="Phone_Company" size="2" />
+    </dimensions>
+    <model_units />
+    <model name="Market">
+        <stock name="Population">
+            <eqn>9000000</eqn>
+            <non_negative />
+            <display x="40" y="73" color="blue" />
+        </stock>
+        <array name="Usual_Customers" access="output">
+            <dimensions>
+                <dim name="Phone_Company" />
+            </dimensions>
+            <stock subscript="1">
+                <eqn>29000</eqn>
+            </stock>
+            <stock subscript="2">
+                <eqn>(29000/0.34)*0.66</eqn>
+            </stock>
+            <inflow>Migrate_In</inflow>
+            <outflow>Migrate_Out</outflow>
+            <non_negative />
+            <display x="53" y="168" color="blue" label_angle="87" />
+        </array>
+        <array name="Migrate_Out">
+            <dimensions>
+                <dim name="Phone_Company" />
+            </dimensions>
+            <flow subscript="1">
+                <eqn>IF MArr[1] &gt;0.5 THEN&#x0A;1*Mig_Mult&#x0A;ELSE&#x0A;0</eqn>
+            </flow>
+            <flow subscript="2">
+                <eqn>IF MArr[2] &gt;0.5 THEN&#x0A;1*Mig_Mult&#x0A;ELSE&#x0A;0</eqn>
+            </flow>
+            <non_negative />
+            <display x="132" y="170" color="blue">
+                <pts>
+                    <pt x="75" y="170" />
+                    <pt x="189" y="170" />
+                </pts>
+            </display>
+        </array>
+        <aux name="Prices" access="input">
+            <dimensions>
+                <dim name="Phone_Company" />
+            </dimensions>
+            <display x="134" y="45" color="blue" />
+        </aux>
+        <aux name="Total">
+            <eqn>SUM(Shop.Prices[*])</eqn>
+            <display x="203" y="45" color="blue" />
+        </aux>
+        <aux name="MArr">
+            <dimensions>
+                <dim name="Phone_Company" />
+            </dimensions>
+            <eqn>Shop.Prices/Total</eqn>
+            <display x="134" y="93" color="blue" />
+        </aux>
+        <array name="Migrate_In">
+            <dimensions>
+                <dim name="Phone_Company" />
+            </dimensions>
+            <flow subscript="1">
+                <eqn>Migrate_Out[2]</eqn>
+            </flow>
+            <flow subscript="2">
+                <eqn>Migrate_Out[1]</eqn>
+            </flow>
+            <non_negative />
+            <display x="54" y="228" color="blue">
+                <pts>
+                    <pt x="54" y="272" />
+                    <pt x="54" y="185" />
+                </pts>
+            </display>
+        </array>
+        <aux name="Mig_Mult">
+            <eqn>100</eqn>
+            <display x="162" y="261" color="blue" />
+        </aux>
+        <display page_width="571" page_height="818" page_cols="2" isee:show_values_on_hover="true" isee:converter_size="medium" zoom="150" isee:animate_flows="true" isee:animate_stocks="true" isee:animate_converters="true" report_interval="0.25" report_every_dt="true">
+            <connector x="136" y="102" uid="29" color="#FF007F">
+                <from>MArr</from>
+                <to>Migrate_Out</to>
+            </connector>
+            <connector x="197" y="51" uid="30" color="#FF007F">
+                <from>Total</from>
+                <to>MArr</to>
+            </connector>
+            <connector x="129" y="179" uid="31" color="#FF007F">
+                <from>Migrate_Out</from>
+                <to>Migrate_In</to>
+            </connector>
+            <connector x="162" y="252" uid="32" color="#FF007F">
+                <from>Mig_Mult</from>
+                <to>Migrate_Out</to>
+            </connector>
+            <connector x="143" y="44" uid="33" color="#FF007F">
+                <from>Prices</from>
+                <to>Total</to>
+            </connector>
+            <connector x="135" y="54" uid="34" color="#FF007F">
+                <from>Prices</from>
+                <to>MArr</to>
+            </connector>
+            <stacked_container x="314" y="148" height="282" width="492" visible_index="0" uid="35">
+                <graph type="time_series" title="Untitled" background="#FFFFC9" show_grid="false" numbers_on_plots="true" isee:use_five_segments="false" isee:date_time="-704365222" time_precision="2" from="0" to="120">
+                    <plot index="0" pen_width="1" color="blue" precision="0" show_y_axis="true">
+                        <entity name="Usual_Customers" index="1" />
+                    </plot>
+                    <plot index="1" pen_width="1" color="red" precision="0" show_y_axis="true">
+                        <entity name="Usual_Customers" index="2" />
+                    </plot>
+                </graph>
+            </stacked_container>
+            <pad_icon x="321" y="155" width="26" height="22" color="#008F44" label_side="bottom" label="Graph 1" type="graph" icon_of="35" />
+        </display>
+        <interface page_width="788" page_height="528">
+            <simulation_delay>0.1</simulation_delay>
+            <pages />
+        </interface>
+    </model>
+</xmile>

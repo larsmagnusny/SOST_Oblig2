@@ -1,0 +1,190 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<xmile version="1.0" level="3" xmlns="http://www.systemdynamics.org/XMILE" xmlns:isee="http://iseesystems.com/XMILE">
+    <header>
+        <smile version="1.0" namespace="std, isee">
+            <uses_submodels />
+        </smile>
+        <name>CLD_Final</name>
+        <uuid>8a5c29dc-0ff0-498e-84ba-dbe00f3554b7</uuid>
+        <vendor>isee systems, inc.</vendor>
+        <product version="10.0.4" lang="en">STELLA</product>
+    </header>
+    <style>
+        <model font-family="Arial" font-size="9" />
+        <interface font-family="Arial" font-size="9" />
+    </style>
+    <sim_specs method="Euler" time_units="Time">
+        <start>0</start>
+        <stop>12</stop>
+        <dt>0.25</dt>
+    </sim_specs>
+    <model_units />
+    <isee:prefs layer="map" grid_width="20" grid_height="50" divide_by_zero_alert="true" hide_taskbar="true" show_module_prefix="true">
+        <isee:window width="1920" height="997" />
+        <isee:security />
+        <isee:print_setup width="571" height="818" />
+    </isee:prefs>
+    <isee:equation_prefs order_by="module" />
+    <model>
+        <module name="Sales">
+            <display x="221" y="89" color="blue" />
+        </module>
+        <module name="Demand">
+            <display x="135" y="88" color="blue" />
+        </module>
+        <module name="Profit">
+            <display x="317" y="111" color="blue" />
+        </module>
+        <module name="Phone_Users">
+            <display x="224" y="130" color="blue" />
+        </module>
+        <module name="Phone_Dumped">
+            <display x="146" y="138" color="blue" />
+        </module>
+        <module name="Recycle">
+            <display x="126" y="193" color="blue" />
+        </module>
+        <module name="Price">
+            <display x="90" y="55" color="blue" />
+        </module>
+        <module name="Supply">
+            <display x="39" y="28" color="blue" />
+        </module>
+        <display page_width="571" page_height="818" isee:show_values_on_hover="true" isee:converter_size="medium" isee:name_only_modules="true" zoom="300" isee:animate_flows="true" isee:animate_stocks="true" isee:animate_converters="true" report_every_dt="true">
+            <connector x="141" y="83" uid="0" color="#FF007F">
+                <from>Demand</from>
+                <to>Sales</to>
+                <polarity>+</polarity>
+            </connector>
+            <connector x="224" y="83" uid="1" color="#FF007F">
+                <from>Sales</from>
+                <to>Profit</to>
+                <polarity>+</polarity>
+            </connector>
+            <connector x="227" y="95" uid="2" color="#FF007F">
+                <from>Sales</from>
+                <to>Phone_Users</to>
+                <polarity>+</polarity>
+            </connector>
+            <connector x="218" y="136" uid="3" color="#FF007F">
+                <from>Phone_Users</from>
+                <to>Phone_Dumped</to>
+                <polarity>+</polarity>
+            </connector>
+            <connector x="139" y="132" uid="4" color="#FF007F">
+                <from>Phone_Dumped</from>
+                <to>Demand</to>
+                <polarity>+</polarity>
+            </connector>
+            <connector x="118" y="144" uid="5" color="#FF007F">
+                <from>Phone_Dumped</from>
+                <to>Recycle</to>
+                <polarity>+</polarity>
+            </connector>
+            <connector x="142" y="187" uid="6" color="#FF007F">
+                <from>Recycle</from>
+                <to>Phone_Dumped</to>
+                <polarity>-</polarity>
+            </connector>
+            <connector x="152" y="132" uid="7" color="#FF007F">
+                <from>Phone_Dumped</from>
+                <to>Phone_Users</to>
+                <polarity>-</polarity>
+            </connector>
+            <connector x="133" y="199" uid="8" color="#FF007F">
+                <from>Recycle</from>
+                <to>Profit</to>
+                <polarity>-</polarity>
+            </connector>
+            <connector x="35" y="33" uid="9" color="#FF007F">
+                <from>Supply</from>
+                <to>Profit</to>
+            </connector>
+            <connector x="101" y="50" uid="10" color="#FF007F">
+                <from>Price</from>
+                <to>Demand</to>
+                <polarity>-</polarity>
+            </connector>
+            <connector x="126" y="94" uid="11" color="#FF007F">
+                <from>Demand</from>
+                <to>Price</to>
+                <polarity>+</polarity>
+            </connector>
+            <connector x="82" y="60" uid="12" color="#FF007F">
+                <from>Price</from>
+                <to>Supply</to>
+                <polarity>+</polarity>
+            </connector>
+            <connector x="46" y="22" uid="13" color="#FF007F">
+                <from>Supply</from>
+                <to>Price</to>
+                <polarity>-</polarity>
+            </connector>
+            <text_box x="53" y="31" uid="14" color="black" font-family="Arial" font-size="12" padding="5" width="30" height="24">B1</text_box>
+            <text_box x="99" y="62" uid="15" color="black" font-family="Arial" font-size="12" padding="5" width="30" height="24">B2</text_box>
+            <text_box x="174" y="122" uid="16" color="black" font-family="Arial" font-size="10" padding="5" width="30" height="24">B3</text_box>
+            <text_box x="165" y="86" uid="17" color="black" font-family="Arial" font-size="12" padding="5" width="30" height="24">R1</text_box>
+            <text_box x="116" y="153" uid="18" color="black" font-family="Arial" font-size="12" padding="5" width="30" height="24">B4</text_box>
+        </display>
+        <interface page_width="788" page_height="528">
+            <simulation_delay>0.1</simulation_delay>
+            <pages />
+        </interface>
+    </model>
+    <model name="Demand">
+        <display page_width="571" page_height="818" isee:show_values_on_hover="true" isee:converter_size="medium" isee:name_only_modules="true" isee:animate_flows="true" isee:animate_stocks="true" isee:animate_converters="true" report_every_dt="true" />
+        <interface page_width="788" page_height="528">
+            <simulation_delay>0.1</simulation_delay>
+            <pages />
+        </interface>
+    </model>
+    <model name="Phone_Dumped">
+        <display page_width="571" page_height="818" isee:show_values_on_hover="true" isee:converter_size="medium" isee:name_only_modules="true" isee:animate_flows="true" isee:animate_stocks="true" isee:animate_converters="true" report_every_dt="true" />
+        <interface page_width="788" page_height="528">
+            <simulation_delay>0.1</simulation_delay>
+            <pages />
+        </interface>
+    </model>
+    <model name="Phone_Users">
+        <display page_width="571" page_height="818" isee:show_values_on_hover="true" isee:converter_size="medium" isee:name_only_modules="true" isee:animate_flows="true" isee:animate_stocks="true" isee:animate_converters="true" report_every_dt="true" />
+        <interface page_width="788" page_height="528">
+            <simulation_delay>0.1</simulation_delay>
+            <pages />
+        </interface>
+    </model>
+    <model name="Price">
+        <display page_width="571" page_height="818" isee:show_values_on_hover="true" isee:converter_size="medium" isee:name_only_modules="true" isee:animate_flows="true" isee:animate_stocks="true" isee:animate_converters="true" report_every_dt="true" />
+        <interface page_width="788" page_height="528">
+            <simulation_delay>0.1</simulation_delay>
+            <pages />
+        </interface>
+    </model>
+    <model name="Profit">
+        <display page_width="571" page_height="818" isee:show_values_on_hover="true" isee:converter_size="medium" isee:name_only_modules="true" isee:animate_flows="true" isee:animate_stocks="true" isee:animate_converters="true" report_every_dt="true" />
+        <interface page_width="788" page_height="528">
+            <simulation_delay>0.1</simulation_delay>
+            <pages />
+        </interface>
+    </model>
+    <model name="Recycle">
+        <display page_width="571" page_height="818" isee:show_values_on_hover="true" isee:converter_size="medium" isee:name_only_modules="true" isee:animate_flows="true" isee:animate_stocks="true" isee:animate_converters="true" report_every_dt="true" />
+        <interface page_width="788" page_height="528">
+            <simulation_delay>0.1</simulation_delay>
+            <pages />
+        </interface>
+    </model>
+    <model name="Sales">
+        <display page_width="571" page_height="818" isee:show_values_on_hover="true" isee:converter_size="medium" isee:name_only_modules="true" isee:animate_flows="true" isee:animate_stocks="true" isee:animate_converters="true" report_every_dt="true" />
+        <interface page_width="788" page_height="528">
+            <simulation_delay>0.1</simulation_delay>
+            <pages />
+        </interface>
+    </model>
+    <model name="Supply">
+        <display page_width="571" page_height="818" isee:show_values_on_hover="true" isee:converter_size="medium" isee:name_only_modules="true" isee:animate_flows="true" isee:animate_stocks="true" isee:animate_converters="true" report_every_dt="true" />
+        <interface page_width="788" page_height="528">
+            <simulation_delay>0.1</simulation_delay>
+            <pages />
+        </interface>
+    </model>
+</xmile>
