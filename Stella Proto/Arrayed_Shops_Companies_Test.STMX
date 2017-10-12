@@ -17,8 +17,8 @@
     </style>
     <sim_specs method="Euler" time_units="Time">
         <start>0</start>
-        <stop>120</stop>
-        <dt>0.25</dt>
+        <stop>480</stop>
+        <dt reciprocal="true">0.0625</dt>
     </sim_specs>
     <dimensions>
         <dim name="Phone_Company" size="2" />
@@ -32,7 +32,7 @@
     <isee:equation_prefs order_by="module" />
     <model>
         <module name="Shop" url="C:\Users\Lars\Google Drive\Systemtenking Oppgaver\Oblig 2\Stella Proto\Modules\Shop.itmx">
-            <display x="148" y="307" color="blue" label_side="left" label_angle="174">
+            <display x="65" y="194" color="blue" label_side="left" label_angle="174">
                 <image size_to_parent="true" width="512" height="512">C:/Users/Lars/Google Drive/Systemtenking Oppgaver/Oblig 2/Stella Proto/Icons/33701.jpg</image>
             </display>
             <connect to="D_price" from="Dhors_Co.Price" />
@@ -42,7 +42,7 @@
             <connect to="Other_Supply" from="Other_Comp.Supply" />
         </module>
         <module name="Dhors_Co" url="C:\Users\Lars\Google Drive\Systemtenking Oppgaver\Oblig 2\Stella Proto\Modules\Dhors Co.itmx">
-            <display x="201" y="159" color="blue">
+            <display x="118" y="46" color="blue">
                 <image size_to_parent="true" width="200" height="200">C:/Users/Lars/Google Drive/Systemtenking Oppgaver/Oblig 2/Stella Proto/Icons/88781-200.jpg</image>
             </display>
             <connect to="Inventory_Ratio" from="Shop.Shop_Stock" />
@@ -50,55 +50,55 @@
             <connect to="Sales" from="Shop.Sales" />
         </module>
         <module name="Market" url="C:\Users\Lars\Google Drive\Systemtenking Oppgaver\Oblig 2\Stella Proto\Modules\Market.itmx">
-            <display x="267" y="309" color="blue" label_side="right" label_angle="2">
+            <display x="184" y="196" color="blue" label_side="right" label_angle="2">
                 <image size_to_parent="true" width="512" height="512">C:/Users/Lars/Google Drive/Systemtenking Oppgaver/Oblig 2/Stella Proto/Icons/user1.jpg</image>
             </display>
             <connect to="Prices" from="Shop.Prices" />
         </module>
         <module name="Other_Comp" url="C:\Users\Lars\Google Drive\Systemtenking Oppgaver\Oblig 2\Stella Proto\Modules\Other Comp.itmx">
-            <display x="284" y="158" color="blue">
+            <display x="201" y="45" color="blue">
                 <image size_to_parent="true" width="200" height="200">C:/Users/Lars/Google Drive/Systemtenking Oppgaver/Oblig 2/Stella Proto/Icons/88781-200.jpg</image>
             </display>
             <connect to="Inventory_Ratio" from="Shop.Shop_Stock" />
             <connect to="Total_Market" from="Market.Usual_Customers" />
             <connect to="Sales" from="Shop.Sales" />
         </module>
-        <display page_width="571" page_height="818" isee:show_values_on_hover="true" isee:converter_size="medium" zoom="150" isee:animate_flows="true" isee:animate_stocks="true" isee:animate_converters="true" report_interval="0.25" report_every_dt="true">
-            <connector x="159" y="287" uid="0" color="#FF007F">
+        <display page_width="571" page_height="818" isee:show_values_on_hover="true" isee:converter_size="medium" zoom="150" isee:animate_flows="true" isee:animate_stocks="true" isee:animate_converters="true" report_interval="0.0625" report_every_dt="true">
+            <connector x="76" y="174" uid="0" color="#FF007F">
                 <from>Shop</from>
                 <to>Dhors_Co</to>
             </connector>
-            <connector x="242" y="314" uid="1" color="#FF007F">
+            <connector x="159" y="201" uid="1" color="#FF007F">
                 <from>Market</from>
                 <to>Shop</to>
             </connector>
-            <connector x="273" y="178" uid="2" color="#FF007F">
+            <connector x="190" y="65" uid="2" color="#FF007F">
                 <from>Other_Comp</from>
                 <to>Shop</to>
             </connector>
-            <connector x="190" y="179" uid="3" color="#FF007F">
+            <connector x="107" y="66" uid="3" color="#FF007F">
                 <from>Dhors_Co</from>
                 <to>Shop</to>
             </connector>
-            <connector x="273" y="289" uid="4" color="#FF007F">
+            <connector x="190" y="176" uid="4" color="#FF007F">
                 <from>Market</from>
                 <to>Other_Comp</to>
             </connector>
-            <connector x="262" y="289" uid="5" color="#FF007F">
+            <connector x="179" y="176" uid="5" color="#FF007F">
                 <from>Market</from>
                 <to>Dhors_Co</to>
             </connector>
-            <connector x="173" y="302" uid="6" color="#FF007F">
+            <connector x="90" y="189" uid="6" color="#FF007F">
                 <from>Shop</from>
                 <to>Market</to>
             </connector>
-            <connector x="168" y="287" uid="7" color="#FF007F">
+            <connector x="85" y="174" uid="7" color="#FF007F">
                 <from>Shop</from>
                 <to>Other_Comp</to>
             </connector>
         </display>
         <interface page_width="788" page_height="528">
-            <simulation_delay>0.1</simulation_delay>
+            <simulation_delay>0</simulation_delay>
             <pages />
         </interface>
     </model>

@@ -56,7 +56,7 @@
     <model_units />
     <model name="Dhors_Co">
         <aux name="Supply" access="output">
-            <eqn>IF Shop.Shop_Stock[1] &lt; Supply_Curve THEN &#x0A;Supply_Curve&#x0A;ELSE&#x0A;0</eqn>
+            <eqn>IF Shop.Shop_Stock[1] &lt; Supply_Curve / 48 THEN &#x0A;Supply_Curve&#x0A;ELSE&#x0A;0</eqn>
             <display x="52" y="355" color="blue" />
         </aux>
         <aux name="Inventory_Ratio" access="input">
@@ -80,7 +80,7 @@
             <display x="318" y="469" color="blue" />
         </stock>
         <aux name="Inventory_Rat">
-            <eqn>Current_Stock/Demand_Curve</eqn>
+            <eqn>(Current_Stock)/(Demand_Curve/48)</eqn>
             <display x="231" y="224" color="blue" />
         </aux>
         <aux name="Effect_On_Price">
@@ -147,7 +147,7 @@
                 </pts>
             </display>
         </flow>
-        <display page_width="571" page_height="818" isee:show_values_on_hover="true" isee:converter_size="medium" zoom="150" isee:animate_flows="true" isee:animate_stocks="true" isee:animate_converters="true" report_interval="0.25" report_every_dt="true" scroll_y="200">
+        <display page_width="571" page_height="818" page_cols="2" isee:show_values_on_hover="true" isee:converter_size="medium" zoom="150" isee:animate_flows="true" isee:animate_stocks="true" isee:animate_converters="true" report_interval="0.0625" report_every_dt="true" scroll_y="200">
             <connector x="147" y="662" uid="8" color="#FF007F">
                 <from>Production_Price</from>
                 <to>Profit</to>
@@ -232,9 +232,20 @@
                 <from>Supply_Curve</from>
                 <to>Supply</to>
             </connector>
+            <stacked_container x="524" y="504" height="282" width="492" visible_index="0" uid="29">
+                <graph type="time_series" title="Untitled" background="#FFFFC9" show_grid="false" numbers_on_plots="true" isee:use_five_segments="false" isee:date_time="-704363667" time_precision="2" from="0" to="480">
+                    <plot index="0" pen_width="1" color="blue" precision="0" show_y_axis="true">
+                        <entity name="Money" />
+                    </plot>
+                    <plot index="1" pen_width="1" color="red" precision="0" show_y_axis="true">
+                        <entity name="Price" />
+                    </plot>
+                </graph>
+            </stacked_container>
+            <pad_icon x="538" y="516" width="26" height="22" color="#008F44" label_side="bottom" label="Graph 1" type="graph" icon_of="29" />
         </display>
         <interface page_width="788" page_height="528">
-            <simulation_delay>0.1</simulation_delay>
+            <simulation_delay>0</simulation_delay>
             <pages />
         </interface>
     </model>

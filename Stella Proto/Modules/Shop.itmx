@@ -71,10 +71,10 @@
                 <dim name="Phone_Company" />
             </dimensions>
             <flow subscript="1">
-                <eqn>Dhors_Co.Supply/12</eqn>
+                <eqn>Dhors_Co.Supply/48</eqn>
             </flow>
             <flow subscript="2">
-                <eqn>Other_Supply/12</eqn>
+                <eqn>Other_Supply/48</eqn>
             </flow>
             <non_negative />
             <display x="131" y="162" color="blue">
@@ -88,7 +88,7 @@
             <dimensions>
                 <dim name="Phone_Company" />
             </dimensions>
-            <eqn>Demands/12</eqn>
+            <eqn>Demands/48</eqn>
             <non_negative />
             <display x="290" y="164" color="blue">
                 <pts>
@@ -110,7 +110,9 @@
             <conveyor>
                 <len>24</len>
             </conveyor>
-            <display x="371" y="169" color="blue" />
+            <display x="371" y="169" color="blue">
+                <isee:story_val>37.7604</isee:story_val>
+            </display>
         </stock>
         <array name="Demands">
             <dimensions>
@@ -165,38 +167,38 @@
         <aux name="Other_Supply" access="input">
             <display x="157" y="95" color="blue" />
         </aux>
-        <display page_width="571" page_height="818" isee:show_values_on_hover="true" isee:converter_size="medium" zoom="150" isee:animate_flows="true" isee:animate_stocks="true" isee:animate_converters="true" report_interval="0.25" report_every_dt="true">
-            <connector x="154" y="103" uid="56" color="#FF007F">
+        <display page_width="571" page_height="818" isee:show_values_on_hover="true" isee:converter_size="medium" zoom="150" isee:animate_flows="true" isee:animate_stocks="true" isee:animate_converters="true" report_interval="0.0625" report_every_dt="true">
+            <connector x="154" y="103" uid="59" color="#FF007F">
                 <from>Other_Supply</from>
                 <to>Add</to>
             </connector>
-            <connector x="80" y="104" uid="57" color="#FF007F">
+            <connector x="80" y="104" uid="60" color="#FF007F">
                 <from>Comp1</from>
                 <to>Add</to>
             </connector>
-            <connector x="291" y="61" uid="58" color="#FF007F">
+            <connector x="291" y="61" uid="61" color="#FF007F">
                 <from>Usual_Cust</from>
                 <to>Demands</to>
             </connector>
-            <connector x="415" y="105" uid="59" color="#FF007F">
+            <connector x="415" y="105" uid="62" color="#FF007F">
                 <from>Other_Price</from>
                 <to>Prices</to>
             </connector>
-            <connector x="411" y="60" uid="60" color="#FF007F">
+            <connector x="411" y="60" uid="63" color="#FF007F">
                 <from>D_price</from>
                 <to>Prices</to>
             </connector>
-            <connector x="354" y="108" uid="61" color="#FF007F">
+            <connector x="354" y="108" uid="64" color="#FF007F">
                 <from>Prices</from>
                 <to>Demands</to>
             </connector>
-            <connector x="290" y="117" uid="62" color="#FF007F">
+            <connector x="290" y="117" uid="65" color="#FF007F">
                 <from>Demands</from>
                 <to>Sales</to>
             </connector>
         </display>
         <interface page_width="788" page_height="528">
-            <simulation_delay>0.1</simulation_delay>
+            <simulation_delay>0</simulation_delay>
             <pages />
         </interface>
     </model>

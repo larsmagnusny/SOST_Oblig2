@@ -129,36 +129,52 @@
             </display>
         </array>
         <aux name="Mig_Mult">
-            <eqn>100</eqn>
+            <eqn>50</eqn>
             <display x="162" y="261" color="blue" />
         </aux>
-        <display page_width="571" page_height="818" page_cols="2" isee:show_values_on_hover="true" isee:converter_size="medium" zoom="150" isee:animate_flows="true" isee:animate_stocks="true" isee:animate_converters="true" report_interval="0.25" report_every_dt="true">
-            <connector x="136" y="102" uid="29" color="#FF007F">
+        <array name="MarketShares">
+            <dimensions>
+                <dim name="Phone_Company" />
+            </dimensions>
+            <aux subscript="1">
+                <eqn>Usual_Customers[1] / SUM(Usual_Customers[*])</eqn>
+            </aux>
+            <aux subscript="2">
+                <eqn>Usual_Customers[2] / SUM(Usual_Customers[*])</eqn>
+            </aux>
+            <display x="56" y="366" color="blue" />
+        </array>
+        <display page_width="571" page_height="818" page_cols="2" isee:show_values_on_hover="true" isee:converter_size="medium" zoom="150" isee:animate_flows="true" isee:animate_stocks="true" isee:animate_converters="true" report_interval="0.0625" report_every_dt="true">
+            <connector x="136" y="102" uid="30" color="#FF007F">
                 <from>MArr</from>
                 <to>Migrate_Out</to>
             </connector>
-            <connector x="197" y="51" uid="30" color="#FF007F">
+            <connector x="197" y="51" uid="31" color="#FF007F">
                 <from>Total</from>
                 <to>MArr</to>
             </connector>
-            <connector x="129" y="179" uid="31" color="#FF007F">
+            <connector x="129" y="179" uid="32" color="#FF007F">
                 <from>Migrate_Out</from>
                 <to>Migrate_In</to>
             </connector>
-            <connector x="162" y="252" uid="32" color="#FF007F">
+            <connector x="162" y="252" uid="33" color="#FF007F">
                 <from>Mig_Mult</from>
                 <to>Migrate_Out</to>
             </connector>
-            <connector x="143" y="44" uid="33" color="#FF007F">
+            <connector x="143" y="44" uid="34" color="#FF007F">
                 <from>Prices</from>
                 <to>Total</to>
             </connector>
-            <connector x="135" y="54" uid="34" color="#FF007F">
+            <connector x="135" y="54" uid="35" color="#FF007F">
                 <from>Prices</from>
                 <to>MArr</to>
             </connector>
-            <stacked_container x="314" y="148" height="282" width="492" visible_index="0" uid="35">
-                <graph type="time_series" title="Untitled" background="#FFFFC9" show_grid="false" numbers_on_plots="true" isee:use_five_segments="false" isee:date_time="-704365222" time_precision="2" from="0" to="120">
+            <connector x="38" y="185" uid="36" color="#FF007F">
+                <from>Usual_Customers</from>
+                <to>MarketShares</to>
+            </connector>
+            <stacked_container x="233" y="22" height="173" width="331" visible_index="0" uid="37">
+                <graph type="time_series" title="Untitled" background="#FFFFC9" show_grid="false" numbers_on_plots="true" isee:use_five_segments="false" isee:date_time="-704363667" time_precision="2" from="0" to="480">
                     <plot index="0" pen_width="1" color="blue" precision="0" show_y_axis="true">
                         <entity name="Usual_Customers" index="1" />
                     </plot>
@@ -167,10 +183,21 @@
                     </plot>
                 </graph>
             </stacked_container>
-            <pad_icon x="321" y="155" width="26" height="22" color="#008F44" label_side="bottom" label="Graph 1" type="graph" icon_of="35" />
+            <pad_icon x="321" y="155" width="26" height="22" color="#008F44" label_side="bottom" label="Graph 1" type="graph" icon_of="37" />
+            <stacked_container x="232" y="217" height="193" width="363" visible_index="0" uid="38">
+                <graph type="time_series" title="Untitled" background="#FFFFC9" show_grid="false" numbers_on_plots="true" isee:use_five_segments="false" isee:date_time="-704363667" time_precision="2" from="0" to="480">
+                    <plot index="0" pen_width="1" color="blue" precision="0" show_y_axis="true">
+                        <entity name="MarketShares" index="1" />
+                    </plot>
+                    <plot index="1" pen_width="1" color="red" precision="0" show_y_axis="true">
+                        <entity name="MarketShares" index="2" />
+                    </plot>
+                </graph>
+            </stacked_container>
+            <pad_icon x="284" y="474" width="26" height="22" color="#008F44" label_side="bottom" label="Graph 2" type="graph" icon_of="38" />
         </display>
         <interface page_width="788" page_height="528">
-            <simulation_delay>0.1</simulation_delay>
+            <simulation_delay>0</simulation_delay>
             <pages />
         </interface>
     </model>
