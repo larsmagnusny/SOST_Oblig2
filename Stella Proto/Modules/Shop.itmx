@@ -52,7 +52,7 @@
         <dt>0.25</dt>
     </sim_specs>
     <dimensions>
-        <dim name="Phone_Company" size="2" />
+        <dim name="Phone_Company" size="3" />
     </dimensions>
     <model_units />
     <model name="Shop">
@@ -76,6 +76,9 @@
             <flow subscript="2">
                 <eqn>Other_Supply/48</eqn>
             </flow>
+            <flow subscript="3">
+                <eqn>Foreign_Competitor.Supply/48</eqn>
+            </flow>
             <non_negative />
             <display x="131" y="162" color="blue">
                 <pts>
@@ -98,7 +101,7 @@
             </display>
         </flow>
         <aux name="Comp1" access="input">
-            <display x="78" y="95" color="blue" />
+            <display x="38" y="90" color="blue" />
         </aux>
         <stock name="Active_Users">
             <dimensions>
@@ -111,7 +114,7 @@
                 <len>24</len>
             </conveyor>
             <display x="371" y="169" color="blue">
-                <isee:story_val>37.7604</isee:story_val>
+                <isee:story_val>43.2838</isee:story_val>
             </display>
         </stock>
         <array name="Demands">
@@ -119,10 +122,13 @@
                 <dim name="Phone_Company" />
             </dimensions>
             <aux subscript="1">
-                <eqn>2*(Market.Usual_Customers[1])^2*(SQRT(Prices[1])-30)/(-60*(Market.Usual_Customers[1])+SQRT(4*600*(Market.Usual_Customers[1])^2))</eqn>
+                <eqn>Dhors_Co.Demand_Curve</eqn>
             </aux>
             <aux subscript="2">
-                <eqn>2*(Market.Usual_Customers[2])^2*(SQRT(Prices[2])-30)/(-60*(Market.Usual_Customers[2])+SQRT(4*600*(Market.Usual_Customers[2])^2))</eqn>
+                <eqn>Other_Comp.Demand_Curve</eqn>
+            </aux>
+            <aux subscript="3">
+                <eqn>Foreign_Competitor.Demand_Curve</eqn>
             </aux>
             <display x="290" y="108" color="blue" />
         </array>
@@ -132,18 +138,50 @@
             </dimensions>
             <eqn>0</eqn>
             <non_negative />
-            <display x="454" y="169" color="blue">
+            <display x="443" y="170" color="blue">
                 <pts>
-                    <pt x="393" y="169" />
-                    <pt x="516" y="169" />
+                    <pt x="393" y="170" />
+                    <pt x="493" y="170" />
                 </pts>
             </display>
         </flow>
-        <aux name="Usual_Cust" access="input">
+        <aux name="Other_Supply" access="input">
+            <display x="117" y="91" color="blue" />
+        </aux>
+        <stock name="Garbage_Dump">
             <dimensions>
                 <dim name="Phone_Company" />
             </dimensions>
-            <display x="290" y="52" color="blue" />
+            <eqn>0</eqn>
+            <inflow>Phone_Trashed</inflow>
+            <outflow>Phones_Recycled</outflow>
+            <non_negative />
+            <display x="515" y="171" color="blue" />
+        </stock>
+        <flow name="Phones_Recycled" access="output">
+            <dimensions>
+                <dim name="Phone_Company" />
+            </dimensions>
+            <eqn>Garbage_Dump/12</eqn>
+            <non_negative />
+            <display x="516" y="244" color="blue">
+                <pts>
+                    <pt x="516" y="188" />
+                    <pt x="516" y="301" />
+                </pts>
+            </display>
+        </flow>
+        <aux name="Rival_Supply" access="input">
+            <display x="218" y="92" color="blue" />
+        </aux>
+        <aux name="Converter_1" access="input">
+            <display x="313" y="42" color="blue" />
+        </aux>
+        <aux name="Converter_2" access="input">
+            <display x="406" y="70" color="blue" />
+        </aux>
+        <aux name="Converter_3" access="input">
+            <display x="412" y="106" color="blue" />
         </aux>
         <array name="Prices" access="output">
             <dimensions>
@@ -155,47 +193,79 @@
             <aux subscript="2">
                 <eqn>Other_Comp.Price</eqn>
             </aux>
-            <display x="363" y="106" color="blue" />
+            <aux subscript="3">
+                <eqn>Foreign_Competitor.Price</eqn>
+            </aux>
+            <display x="203" y="294" color="blue" />
         </array>
-        <aux name="D_price" access="input">
-            <display x="418" y="54" color="blue" />
+        <aux name="Converter_4" access="input">
+            <display x="133" y="228" color="blue" />
         </aux>
-        <aux name="Other_Price" access="input">
-            <eqn>600</eqn>
-            <display x="424" y="103" color="blue" />
+        <aux name="Converter_5" access="input">
+            <display x="206" y="229" color="blue" />
         </aux>
-        <aux name="Other_Supply" access="input">
-            <display x="157" y="95" color="blue" />
+        <aux name="Converter_6" access="input">
+            <display x="302" y="228" color="blue" />
         </aux>
-        <display page_width="571" page_height="818" isee:show_values_on_hover="true" isee:converter_size="medium" zoom="150" isee:animate_flows="true" isee:animate_stocks="true" isee:animate_converters="true" report_interval="0.0625" report_every_dt="true">
-            <connector x="154" y="103" uid="59" color="#FF007F">
-                <from>Other_Supply</from>
-                <to>Add</to>
-            </connector>
-            <connector x="80" y="104" uid="60" color="#FF007F">
-                <from>Comp1</from>
-                <to>Add</to>
-            </connector>
-            <connector x="291" y="61" uid="61" color="#FF007F">
-                <from>Usual_Cust</from>
-                <to>Demands</to>
-            </connector>
-            <connector x="415" y="105" uid="62" color="#FF007F">
-                <from>Other_Price</from>
+        <display page_width="571" page_height="818" isee:show_values_on_hover="true" isee:converter_size="medium" zoom="150" isee:animate_flows="true" isee:animate_stocks="true" isee:animate_converters="true" report_interval="0.0625" report_every_dt="true" scroll_y="24">
+            <connector x="204" y="238" uid="93" color="#FF007F">
+                <from>Converter_5</from>
                 <to>Prices</to>
             </connector>
-            <connector x="411" y="60" uid="63" color="#FF007F">
-                <from>D_price</from>
-                <to>Prices</to>
-            </connector>
-            <connector x="354" y="108" uid="64" color="#FF007F">
-                <from>Prices</from>
+            <connector x="403" y="106" uid="94" color="#FF007F">
+                <from>Converter_3</from>
                 <to>Demands</to>
             </connector>
-            <connector x="290" y="117" uid="65" color="#FF007F">
+            <connector x="498" y="188" uid="95" color="#FF007F">
+                <from>Garbage_Dump</from>
+                <to>Phones_Recycled</to>
+            </connector>
+            <connector x="290" y="117" uid="96" color="#FF007F">
                 <from>Demands</from>
                 <to>Sales</to>
             </connector>
+            <connector x="211" y="98" uid="97" color="#FF007F">
+                <from>Rival_Supply</from>
+                <to>Add</to>
+            </connector>
+            <connector x="44" y="97" uid="98" color="#FF007F">
+                <from>Comp1</from>
+                <to>Add</to>
+            </connector>
+            <connector x="315" y="51" uid="99" color="#FF007F">
+                <from>Converter_1</from>
+                <to>Demands</to>
+            </connector>
+            <connector x="295" y="234" uid="100" color="#FF007F">
+                <from>Converter_6</from>
+                <to>Prices</to>
+            </connector>
+            <connector x="398" y="73" uid="101" color="#FF007F">
+                <from>Converter_2</from>
+                <to>Demands</to>
+            </connector>
+            <connector x="139" y="234" uid="102" color="#FF007F">
+                <from>Converter_4</from>
+                <to>Prices</to>
+            </connector>
+            <connector x="118" y="100" uid="103" color="#FF007F">
+                <from>Other_Supply</from>
+                <to>Add</to>
+            </connector>
+            <stacked_container x="14" y="352" height="282" width="492" visible_index="0" uid="104">
+                <graph type="time_series" title="Untitled" background="#FFFFC9" show_grid="false" numbers_on_plots="true" isee:use_five_segments="false" isee:date_time="-704295970" time_precision="2" from="0" to="480">
+                    <plot index="0" pen_width="1" color="blue" precision="0" show_y_axis="true">
+                        <entity name="Sales" index="1" />
+                    </plot>
+                    <plot index="1" pen_width="1" color="red" precision="0" show_y_axis="true">
+                        <entity name="Sales" index="2" />
+                    </plot>
+                    <plot index="2" pen_width="1" color="fuchsia" precision="0" show_y_axis="true">
+                        <entity name="Sales" index="3" />
+                    </plot>
+                </graph>
+            </stacked_container>
+            <pad_icon x="46" y="241" width="26" height="22" color="#008F44" label_side="bottom" label="Graph 1" type="graph" icon_of="104" />
         </display>
         <interface page_width="788" page_height="528">
             <simulation_delay>0</simulation_delay>
