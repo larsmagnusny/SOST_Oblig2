@@ -55,7 +55,20 @@
     </dimensions>
     <model_units />
     <model name="Market">
-        <array name="Usual_Customers" access="output">
+        <aux name="Rival_Active" access="input">
+            <display x="354" y="35" color="blue" />
+        </aux>
+        <aux name="Converter_1" access="input">
+            <dimensions>
+                <dim name="Phone_Company" />
+            </dimensions>
+            <display x="43" y="23" color="blue" />
+        </aux>
+        <aux name="Sale_Sum">
+            <eqn>IF Foreign_Competitor.Active THEN&#x0A;SUM(Shop.Sales[*])&#x0A;ELSE&#x0A;Shop.Sales[1] + Shop.Sales[2]</eqn>
+            <display x="104" y="22" color="blue" />
+        </aux>
+        <array name="Usual_Customerss" access="output">
             <dimensions>
                 <dim name="Phone_Company" />
             </dimensions>
@@ -66,84 +79,114 @@
                 <eqn>(29000/0.34)*0.66</eqn>
             </stock>
             <stock subscript="3">
-                <eqn>20</eqn>
+                <eqn>0</eqn>
             </stock>
-            <inflow>MigrateIn</inflow>
-            <outflow>MigrateOut</outflow>
+            <outflow>Flow_1</outflow>
             <non_negative />
-            <display x="53" y="168" color="blue" label_angle="87" />
+            <display x="56" y="134" color="blue" />
         </array>
-        <array name="MarketShares">
+        <array name="Flow_1">
+            <dimensions>
+                <dim name="Phone_Company" />
+            </dimensions>
+            <flow subscript="1">
+                <eqn>IF Perc[1]*Tot &lt; Usual_Customerss[1] THEN&#x0A;(Usual_Customerss[1]-Perc[1]*Tot)/Del&#x0A;ELSE&#x0A;-(Perc[1]*Tot - Usual_Customerss[1])/Del</eqn>
+            </flow>
+            <flow subscript="2">
+                <eqn>IF Perc[2]*Tot &lt; Usual_Customerss[2] THEN&#x0A;(Usual_Customerss[2]-Perc[2]*Tot)/Del&#x0A;ELSE&#x0A;-(Perc[2]*Tot - Usual_Customerss[2])/Del</eqn>
+            </flow>
+            <flow subscript="3">
+                <eqn>IF Perc[3]*Tot &lt; Usual_Customerss[3] AND Foreign_Competitor.Active THEN&#x0A;(Usual_Customerss[3]-Perc[3]*Tot)/Del&#x0A;ELSE&#x0A;-(Perc[3]*Tot - Usual_Customerss[3])/Del</eqn>
+            </flow>
+            <display x="141" y="135" color="blue">
+                <pts>
+                    <pt x="78" y="135" />
+                    <pt x="204" y="135" />
+                </pts>
+            </display>
+        </array>
+        <array name="Perc">
             <dimensions>
                 <dim name="Phone_Company" />
             </dimensions>
             <aux subscript="1">
-                <eqn>Usual_Customers[1] / SUM(Usual_Customers[*])</eqn>
+                <eqn>Shop.Sales[1] / Sale_Sum</eqn>
             </aux>
             <aux subscript="2">
-                <eqn>Usual_Customers[2] / SUM(Usual_Customers[*])</eqn>
+                <eqn>Shop.Sales[2] / Sale_Sum</eqn>
             </aux>
             <aux subscript="3">
-                <eqn>Usual_Customers[3] / SUM(Usual_Customers[*])</eqn>
+                <eqn>IF Foreign_Competitor.Active THEN&#x0A;Shop.Sales[3] / Sale_Sum&#x0A;ELSE&#x0A;0</eqn>
             </aux>
-            <display x="57" y="40" color="blue" />
+            <display x="68" y="72" color="blue" />
         </array>
-        <aux name="Rival_Active" access="input">
-            <display x="202" y="34" color="blue" />
+        <aux name="Del">
+            <eqn>14</eqn>
+            <display x="143" y="192" color="blue" />
         </aux>
-        <aux name="Total">
-            <eqn>SUM(Usual_Customers[*])</eqn>
-            <display x="98" y="40" color="blue" />
+        <aux name="Tot">
+            <eqn>SUM(Usual_Customerss[*])</eqn>
+            <display x="138" y="82" color="blue" />
         </aux>
-        <flow name="MigrateOut">
-            <dimensions>
-                <dim name="Phone_Company" />
-            </dimensions>
-            <eqn>MArr*People_Per_Week</eqn>
-            <non_negative />
-            <display x="154" y="172" color="blue">
-                <pts>
-                    <pt x="75" y="172" />
-                    <pt x="234" y="172" />
-                </pts>
-            </display>
-        </flow>
-        <flow name="MigrateIn">
-            <dimensions>
-                <dim name="Phone_Company" />
-            </dimensions>
-            <eqn>MArr*People_Per_Week</eqn>
-            <non_negative />
-            <display x="56" y="250" color="blue">
-                <pts>
-                    <pt x="56" y="315" />
-                    <pt x="56" y="185" />
-                </pts>
-            </display>
-        </flow>
         <display page_width="571" page_height="818" page_cols="2" isee:show_values_on_hover="true" isee:converter_size="medium" zoom="150" isee:animate_flows="true" isee:animate_stocks="true" isee:animate_converters="true" report_interval="0.0625" report_every_dt="true">
-            <connector x="59" y="151" uid="67" color="#FF007F">
-                <from>Usual_Customers</from>
-                <to>Total</to>
+            <connector x="45" y="32" uid="62" color="#FF007F">
+                <from>Converter_1</from>
+                <to>Perc</to>
             </connector>
-            <connector x="34" y="152" uid="68" color="#FF007F">
-                <from>Usual_Customers</from>
-                <to>MarketShares</to>
+            <connector x="51" y="19" uid="63" color="#FF007F">
+                <from>Converter_1</from>
+                <to>Sale_Sum</to>
             </connector>
-            <stacked_container x="648" y="32" height="173" width="331" visible_index="0" uid="69">
-                <graph type="time_series" title="Untitled" background="#FFFFC9" show_grid="false" numbers_on_plots="true" isee:use_five_segments="false" isee:date_time="-704295970" time_precision="2" from="0" to="480">
-                    <plot index="0" pen_width="1" color="blue" precision="0" show_y_axis="true">
-                        <entity name="Usual_Customers" index="1" />
+            <connector x="101" y="31" uid="64" color="#FF007F">
+                <from>Sale_Sum</from>
+                <to>Perc</to>
+            </connector>
+            <connector x="73" y="79" uid="65" color="#FF007F">
+                <from>Perc</from>
+                <to>Flow_1</to>
+            </connector>
+            <connector x="78" y="148" uid="66" color="#FF007F">
+                <from>Usual_Customerss</from>
+                <to>Flow_1</to>
+            </connector>
+            <connector x="144" y="183" uid="67" color="#FF007F">
+                <from>Del</from>
+                <to>Flow_1</to>
+            </connector>
+            <connector x="62" y="118" uid="68" color="#FF007F">
+                <from>Usual_Customerss</from>
+                <to>Tot</to>
+            </connector>
+            <connector x="139" y="91" uid="69" color="#FF007F">
+                <from>Tot</from>
+                <to>Flow_1</to>
+            </connector>
+            <connector x="345" y="37" uid="70" color="#FF007F">
+                <from>Rival_Active</from>
+                <to>Sale_Sum</to>
+            </connector>
+            <connector x="345" y="37" uid="71" color="#FF007F">
+                <from>Rival_Active</from>
+                <to>Perc</to>
+            </connector>
+            <connector x="346" y="39" uid="72" color="#FF007F">
+                <from>Rival_Active</from>
+                <to>Flow_1</to>
+            </connector>
+            <stacked_container x="648" y="32" height="173" width="331" visible_index="0" uid="73">
+                <graph type="time_series" title="Untitled" background="#FFFFC9" show_grid="false" numbers_on_plots="true" isee:use_five_segments="false" isee:date_time="-703518557" time_precision="2" from="0" to="480">
+                    <plot index="0" pen_width="1" color="#008F44" precision="0" show_y_axis="true">
+                        <entity name="Usual_Customerss" index="1" />
                     </plot>
-                    <plot index="1" pen_width="1" color="red" precision="0" show_y_axis="true">
-                        <entity name="Usual_Customers" index="2" />
+                    <plot index="1" pen_width="1" color="#FF7F00" precision="0" show_y_axis="true">
+                        <entity name="Usual_Customerss" index="2" />
                     </plot>
                     <plot index="2" pen_width="1" color="fuchsia" precision="0" show_y_axis="true">
-                        <entity name="Usual_Customers" index="3" />
+                        <entity name="Usual_Customerss" index="3" />
                     </plot>
                 </graph>
             </stacked_container>
-            <pad_icon x="615" y="117" width="26" height="22" color="#008F44" label_side="bottom" label="Graph 1" type="graph" icon_of="69" />
+            <pad_icon x="615" y="117" width="26" height="22" color="#008F44" label_side="bottom" label="Graph 1" type="graph" icon_of="73" />
         </display>
         <interface page_width="788" page_height="528">
             <simulation_delay>0</simulation_delay>

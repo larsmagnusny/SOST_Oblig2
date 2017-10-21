@@ -25,7 +25,7 @@
     </dimensions>
     <model_units />
     <isee:prefs layer="model" grid_width="20" grid_height="50" divide_by_zero_alert="true" hide_taskbar="true" show_module_prefix="true">
-        <isee:window width="1904" height="981" />
+        <isee:window width="1920" height="997" />
         <isee:security />
         <isee:print_setup width="571" height="818" />
     </isee:prefs>
@@ -35,95 +35,121 @@
             <display x="65" y="194" color="blue" label_side="left" label_angle="174">
                 <image size_to_parent="true" width="512" height="512">C:/Users/Lars/Google Drive/Systemtenking Oppgaver/Oblig 2/Stella Proto/Icons/33701.jpg</image>
             </display>
-            <connect to="Comp1" from="Dhors_Co.Supply" />
-            <connect to="Other_Supply" from="Other_Comp.Supply" />
-            <connect to="Converter_1" from="Dhors_Co.Demand_Curve" />
             <connect to="Converter_2" from="Other_Comp.Demand_Curve" />
-            <connect to="Rival_Supply" from="Foreign_Competitor.Supply" />
-            <connect to="Converter_6" from="Foreign_Competitor.Price" />
             <connect to="Converter_3" from="Foreign_Competitor.Demand_Curve" />
             <connect to="Converter_4" from="Dhors_Co.Price" />
+            <connect to="Comp1" from="Dhors_Co.Supply" />
+            <connect to="Rival_Supply" from="Foreign_Competitor.Supply" />
+            <connect to="Converter_1" from="Dhors_Co.Demand_Curve" />
             <connect to="Converter_5" from="Other_Comp.Price" />
+            <connect to="Other_Supply" from="Other_Comp.Supply" />
+            <connect to="Converter_6" from="Foreign_Competitor.Price" />
         </module>
         <module name="Dhors_Co" url="C:\Users\Lars\Google Drive\Systemtenking Oppgaver\Oblig 2\Stella Proto\Modules\Dhors Co.itmx">
             <display x="65" y="48" color="blue">
                 <image size_to_parent="true" width="200" height="200">C:/Users/Lars/Google Drive/Systemtenking Oppgaver/Oblig 2/Stella Proto/Icons/88781-200.jpg</image>
             </display>
             <connect to="Inventory_Ratio" from="Shop.Shop_Stock" />
-            <connect to="Total_Market" from="Market.Usual_Customers" />
+            <connect to="Total_Market" from="Shop.Ready_To_Buy" />
             <connect to="Sales" from="Shop.Sales" />
             <connect to="Phones_recycled" from="Shop.Phones_Recycled" />
-            <connect to="Converter_1" from="Shop.Prices" />
         </module>
         <module name="Market" url="C:\Users\Lars\Google Drive\Systemtenking Oppgaver\Oblig 2\Stella Proto\Modules\Market.itmx">
             <display x="184" y="196" color="blue" label_side="right" label_angle="2">
                 <image size_to_parent="true" width="512" height="512">C:/Users/Lars/Google Drive/Systemtenking Oppgaver/Oblig 2/Stella Proto/Icons/user1.jpg</image>
             </display>
             <connect to="Rival_Active" from="Foreign_Competitor.Active" />
+            <connect to="Converter_1" from="Shop.Sales" />
         </module>
         <module name="Other_Comp" url="C:\Users\Lars\Google Drive\Systemtenking Oppgaver\Oblig 2\Stella Proto\Modules\Other Comp.itmx">
             <display x="184" y="47" color="blue">
                 <image size_to_parent="true" width="200" height="200">C:/Users/Lars/Google Drive/Systemtenking Oppgaver/Oblig 2/Stella Proto/Icons/88781-200.jpg</image>
             </display>
             <connect to="Inventory_Ratio" from="Shop.Shop_Stock" />
-            <connect to="Total_Market" from="Market.Usual_Customers" />
+            <connect to="Total_Market" from="Shop.Ready_To_Buy" />
             <connect to="Sales" from="Shop.Sales" />
-            <connect to="Converter_1" from="Shop.Prices" />
         </module>
         <module name="Foreign_Competitor" url="C:\Users\Lars\Google Drive\Systemtenking Oppgaver\Oblig 2\Stella Proto\Modules\Foreign Competitor.itmx">
             <display x="283" y="45" color="blue">
                 <image size_to_parent="true" width="200" height="200">C:/Users/Lars/Google Drive/Systemtenking Oppgaver/Oblig 2/Stella Proto/Icons/88781-200.jpg</image>
             </display>
             <connect to="Inventory_Ratio" from="Shop.Shop_Stock" />
-            <connect to="Total_Market" from="Market.Usual_Customers" />
+            <connect to="Total_Market" from="Shop.Ready_To_Buy" />
             <connect to="Sales" from="Shop.Sales" />
             <connect to="Phones_recycled" from="Shop.Phones_Recycled" />
         </module>
-        <display page_width="571" page_height="818" isee:show_values_on_hover="true" isee:converter_size="medium" zoom="150" isee:animate_flows="true" isee:animate_stocks="true" isee:animate_converters="true" report_interval="0.0625" report_every_dt="true">
-            <connector x="70" y="174" uid="0" color="#FF007F">
-                <from>Shop</from>
-                <to>Dhors_Co</to>
-            </connector>
-            <connector x="208" y="176" uid="1" color="#FF007F">
-                <from>Market</from>
-                <to>Foreign_Competitor</to>
-            </connector>
-            <connector x="90" y="189" uid="2" color="#FF007F">
-                <from>Shop</from>
-                <to>Market</to>
-            </connector>
-            <connector x="167" y="67" uid="3" color="#FF007F">
+        <display page_width="571" page_height="818" page_cols="2" isee:show_values_on_hover="true" isee:converter_size="medium" zoom="150" isee:animate_flows="true" isee:animate_stocks="true" isee:animate_converters="true" report_interval="0.0625" report_every_dt="true">
+            <connector x="168" y="67" uid="0" color="#FF007F">
                 <from>Other_Comp</from>
                 <to>Shop</to>
             </connector>
-            <connector x="90" y="175" uid="4" color="#FF007F">
-                <from>Shop</from>
-                <to>Foreign_Competitor</to>
-            </connector>
-            <connector x="81" y="174" uid="5" color="#FF007F">
-                <from>Shop</from>
-                <to>Other_Comp</to>
-            </connector>
-            <connector x="60" y="68" uid="6" color="#FF007F">
+            <connector x="60" y="68" uid="1" color="#FF007F">
                 <from>Dhors_Co</from>
                 <to>Shop</to>
             </connector>
-            <connector x="184" y="176" uid="7" color="#FF007F">
-                <from>Market</from>
-                <to>Other_Comp</to>
+            <connector x="90" y="175" uid="2" color="#FF007F">
+                <from>Shop</from>
+                <to>Foreign_Competitor</to>
             </connector>
-            <connector x="303" y="65" uid="8" color="#FF007F">
+            <connector x="294" y="64" uid="3" color="#FF007F">
                 <from>Foreign_Competitor</from>
                 <to>Market</to>
             </connector>
-            <connector x="168" y="176" uid="9" color="#FF007F">
-                <from>Market</from>
+            <connector x="81" y="174" uid="4" color="#FF007F">
+                <from>Shop</from>
+                <to>Other_Comp</to>
+            </connector>
+            <connector x="69" y="174" uid="5" color="#FF007F">
+                <from>Shop</from>
                 <to>Dhors_Co</to>
             </connector>
-            <connector x="263" y="65" uid="10" color="#FF007F">
+            <connector x="263" y="65" uid="6" color="#FF007F">
                 <from>Foreign_Competitor</from>
                 <to>Shop</to>
             </connector>
+            <connector x="90" y="189" uid="7" color="#FF007F">
+                <from>Shop</from>
+                <to>Market</to>
+            </connector>
+            <stacked_container x="21" y="268" height="411" width="717" visible_index="2" uid="8">
+                <graph type="time_series" title="Untitled" background="#FFFFC9" show_grid="false" numbers_on_plots="true" isee:use_five_segments="false" isee:date_time="-703518557" time_precision="2" from="0" to="480">
+                    <plot index="0" pen_width="1" color="blue" precision="0" show_y_axis="true">
+                        <entity name="Dhors_Co.Money" />
+                    </plot>
+                    <plot index="1" pen_width="1" color="red" precision="0" show_y_axis="true">
+                        <entity name="Dhors_Co.Price" />
+                    </plot>
+                    <plot index="2" pen_width="1" color="fuchsia" precision="0" show_y_axis="true">
+                        <entity name="Foreign_Competitor.Price" />
+                    </plot>
+                </graph>
+                <graph type="time_series" title="Untitled" background="#FFFFC9" show_grid="false" numbers_on_plots="true" isee:use_five_segments="false" isee:date_time="-703518557" time_precision="2" from="0" to="480">
+                    <plot index="0" pen_width="1" color="blue" precision="0" show_y_axis="true">
+                        <entity name="Market.Usual_Customerss" index="1" />
+                    </plot>
+                    <plot index="1" pen_width="1" color="red" precision="0" show_y_axis="true">
+                        <entity name="Market.Usual_Customerss" index="2" />
+                    </plot>
+                    <plot index="2" pen_width="1" color="fuchsia" precision="0" show_y_axis="true">
+                        <entity name="Market.Usual_Customerss" index="3" />
+                    </plot>
+                </graph>
+                <graph type="time_series" title="Untitled" background="#FFFFC9" show_grid="false" numbers_on_plots="true" isee:use_five_segments="false" isee:date_time="-703518557" time_precision="2" from="0" to="480">
+                    <plot index="0" pen_width="1" color="blue" precision="0" show_y_axis="true">
+                        <entity name="Shop.Ready_To_Buy" />
+                    </plot>
+                    <plot index="1" pen_width="1" color="red" precision="0" show_y_axis="true">
+                        <entity name="Shop.Sales" index="1" />
+                    </plot>
+                    <plot index="2" pen_width="1" color="fuchsia" precision="0" show_y_axis="true">
+                        <entity name="Shop.Sales" index="2" />
+                    </plot>
+                    <plot index="3" pen_width="1" color="#008F44" precision="0" show_y_axis="true">
+                        <entity name="Shop.Sales" index="3" />
+                    </plot>
+                </graph>
+            </stacked_container>
+            <pad_icon x="129" y="322" width="26" height="22" color="#008F44" label_side="bottom" label="Graph 1" type="graph" icon_of="8" />
         </display>
         <interface page_width="788" page_height="528">
             <simulation_delay>0</simulation_delay>

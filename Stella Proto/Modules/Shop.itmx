@@ -114,7 +114,7 @@
                 <len>24</len>
             </conveyor>
             <display x="371" y="169" color="blue">
-                <isee:story_val>43.2838</isee:story_val>
+                <isee:story_val>111.06</isee:story_val>
             </display>
         </stock>
         <array name="Demands">
@@ -196,64 +196,99 @@
             <aux subscript="3">
                 <eqn>Foreign_Competitor.Price</eqn>
             </aux>
-            <display x="203" y="294" color="blue" />
+            <display x="123" y="266" color="blue" />
         </array>
         <aux name="Converter_4" access="input">
-            <display x="133" y="228" color="blue" />
+            <display x="53" y="200" color="blue" />
         </aux>
         <aux name="Converter_5" access="input">
-            <display x="206" y="229" color="blue" />
+            <display x="126" y="201" color="blue" />
         </aux>
         <aux name="Converter_6" access="input">
-            <display x="302" y="228" color="blue" />
+            <display x="222" y="200" color="blue" />
         </aux>
+        <stock name="Ready_To_Buy" access="output">
+            <eqn>29000 / 0.34</eqn>
+            <inflow>Flow_1</inflow>
+            <outflow>Flow_2</outflow>
+            <non_negative />
+            <display x="395" y="288" color="blue" />
+        </stock>
+        <flow name="Flow_1">
+            <eqn>SUM(Phone_Trashed[*])</eqn>
+            <non_negative />
+            <display x="373" y="244" color="blue" label_side="right" label_angle="352">
+                <pts>
+                    <pt x="373" y="217" />
+                    <pt x="373" y="271" />
+                </pts>
+            </display>
+        </flow>
+        <flow name="Flow_2">
+            <eqn>SUM(Sales[*])</eqn>
+            <non_negative />
+            <display x="315" y="286" color="blue">
+                <pts>
+                    <pt x="373" y="286" />
+                    <pt x="258" y="286" />
+                </pts>
+            </display>
+        </flow>
         <display page_width="571" page_height="818" isee:show_values_on_hover="true" isee:converter_size="medium" zoom="150" isee:animate_flows="true" isee:animate_stocks="true" isee:animate_converters="true" report_interval="0.0625" report_every_dt="true" scroll_y="24">
-            <connector x="204" y="238" uid="93" color="#FF007F">
-                <from>Converter_5</from>
+            <connector x="59" y="206" uid="94" color="#FF007F">
+                <from>Converter_4</from>
                 <to>Prices</to>
             </connector>
-            <connector x="403" y="106" uid="94" color="#FF007F">
-                <from>Converter_3</from>
-                <to>Demands</to>
+            <connector x="215" y="206" uid="95" color="#FF007F">
+                <from>Converter_6</from>
+                <to>Prices</to>
             </connector>
-            <connector x="498" y="188" uid="95" color="#FF007F">
-                <from>Garbage_Dump</from>
-                <to>Phones_Recycled</to>
+            <connector x="118" y="100" uid="96" color="#FF007F">
+                <from>Other_Supply</from>
+                <to>Add</to>
             </connector>
-            <connector x="290" y="117" uid="96" color="#FF007F">
+            <connector x="290" y="117" uid="97" color="#FF007F">
                 <from>Demands</from>
                 <to>Sales</to>
-            </connector>
-            <connector x="211" y="98" uid="97" color="#FF007F">
-                <from>Rival_Supply</from>
-                <to>Add</to>
             </connector>
             <connector x="44" y="97" uid="98" color="#FF007F">
                 <from>Comp1</from>
                 <to>Add</to>
             </connector>
-            <connector x="315" y="51" uid="99" color="#FF007F">
-                <from>Converter_1</from>
-                <to>Demands</to>
+            <connector x="211" y="98" uid="99" color="#FF007F">
+                <from>Rival_Supply</from>
+                <to>Add</to>
             </connector>
-            <connector x="295" y="234" uid="100" color="#FF007F">
-                <from>Converter_6</from>
-                <to>Prices</to>
+            <connector x="498" y="188" uid="100" color="#FF007F">
+                <from>Garbage_Dump</from>
+                <to>Phones_Recycled</to>
             </connector>
             <connector x="398" y="73" uid="101" color="#FF007F">
                 <from>Converter_2</from>
                 <to>Demands</to>
             </connector>
-            <connector x="139" y="234" uid="102" color="#FF007F">
-                <from>Converter_4</from>
+            <connector x="124" y="210" uid="102" color="#FF007F">
+                <from>Converter_5</from>
                 <to>Prices</to>
             </connector>
-            <connector x="118" y="100" uid="103" color="#FF007F">
-                <from>Other_Supply</from>
-                <to>Add</to>
+            <connector x="315" y="51" uid="103" color="#FF007F">
+                <from>Converter_1</from>
+                <to>Demands</to>
             </connector>
-            <stacked_container x="14" y="352" height="282" width="492" visible_index="0" uid="104">
-                <graph type="time_series" title="Untitled" background="#FFFFC9" show_grid="false" numbers_on_plots="true" isee:use_five_segments="false" isee:date_time="-704295970" time_precision="2" from="0" to="480">
+            <connector x="403" y="106" uid="104" color="#FF007F">
+                <from>Converter_3</from>
+                <to>Demands</to>
+            </connector>
+            <connector x="440" y="179" uid="105" color="#FF007F">
+                <from>Phone_Trashed</from>
+                <to>Flow_1</to>
+            </connector>
+            <connector x="298" y="167" uid="106" color="#FF007F">
+                <from>Sales</from>
+                <to>Flow_2</to>
+            </connector>
+            <stacked_container x="14" y="352" height="282" width="492" visible_index="0" uid="107">
+                <graph type="time_series" title="Untitled" background="#FFFFC9" show_grid="false" numbers_on_plots="true" isee:use_five_segments="false" isee:date_time="-703518557" time_precision="2" from="0" to="480">
                     <plot index="0" pen_width="1" color="blue" precision="0" show_y_axis="true">
                         <entity name="Sales" index="1" />
                     </plot>
@@ -263,9 +298,12 @@
                     <plot index="2" pen_width="1" color="fuchsia" precision="0" show_y_axis="true">
                         <entity name="Sales" index="3" />
                     </plot>
+                    <plot index="3" pen_width="1" color="#008F44" precision="0" show_y_axis="true">
+                        <entity name="Ready_To_Buy" />
+                    </plot>
                 </graph>
             </stacked_container>
-            <pad_icon x="46" y="241" width="26" height="22" color="#008F44" label_side="bottom" label="Graph 1" type="graph" icon_of="104" />
+            <pad_icon x="46" y="241" width="26" height="22" color="#008F44" label_side="bottom" label="Graph 1" type="graph" icon_of="107" />
         </display>
         <interface page_width="788" page_height="528">
             <simulation_delay>0</simulation_delay>

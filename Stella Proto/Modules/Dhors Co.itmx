@@ -56,7 +56,7 @@
     <model_units />
     <model name="Dhors_Co">
         <aux name="Supply" access="output">
-            <eqn>IF Shop.Shop_Stock[1] &lt; Supply_Curve / 48 THEN &#x0A;Supply_Curve + Extra_Supply&#x0A;ELSE&#x0A;Extra_Supply</eqn>
+            <eqn>IF Inventory_Ratio[1] &lt; Supply_Curve / 48 THEN &#x0A;Supply_Curve&#x0A;ELSE&#x0A;0</eqn>
             <display x="30" y="148" color="blue" />
         </aux>
         <aux name="Inventory_Ratio" access="input">
@@ -66,11 +66,11 @@
             <display x="102" y="57" color="blue" />
         </aux>
         <aux name="Current_Stock">
-            <eqn>Shop.Shop_Stock[1]</eqn>
+            <eqn>Inventory_Ratio[1]</eqn>
             <display x="152" y="30" color="blue" />
         </aux>
         <aux name="Demand_Curve" access="output">
-            <eqn>2*(Market.Usual_Customers[1])^2*(SQRT(price)-30)/(-60*(Market.Usual_Customers[1])+SQRT(4*600*(Market.Usual_Customers[1])^2))</eqn>
+            <eqn>2*(Total_Market)^2*(SQRT(price)-30)/(-60*(Total_Market)+SQRT(4*600*(Total_Market)^2))</eqn>
             <display x="404" y="51" color="blue" />
         </aux>
         <stock name="Price" access="output">
@@ -110,7 +110,7 @@
             <display x="163" y="216" color="blue" />
         </aux>
         <aux name="Supply_Curve">
-            <eqn>SQRT((price*(Market.Usual_Customers[1])^2)/(production_price*(3/2)))</eqn>
+            <eqn>SQRT((price*(Total_Market)^2)/(production_price*(3/2)))</eqn>
             <display x="133" y="385" color="blue" />
         </aux>
         <aux name="Production_Price">
@@ -118,9 +118,6 @@
             <display x="134" y="456" color="blue" />
         </aux>
         <aux name="Total_Market" access="input">
-            <dimensions>
-                <dim name="Phone_Company" />
-            </dimensions>
             <display x="397" y="334" color="blue" />
         </aux>
         <stock name="Money">
@@ -129,7 +126,7 @@
             <display x="32" y="547" color="blue" />
         </stock>
         <aux name="Profit">
-            <eqn>Price*Shop.Sales[1] - Production_Price*(Supply/48)</eqn>
+            <eqn>Price*Sales[1] - Production_Price*(Supply/48)</eqn>
             <display x="26" y="445" color="blue" />
         </aux>
         <aux name="Sales" access="input">
@@ -149,7 +146,7 @@
             <display x="249" y="606" color="blue" />
         </aux>
         <aux name="Payment">
-            <eqn>Shop.Phones_Recycled[1]*Price*Tax_per_Phone</eqn>
+            <eqn>Phones_recycled[1]*Price*Tax_per_Phone</eqn>
             <display x="149" y="594" color="blue" />
         </aux>
         <flow name="Change">
@@ -161,135 +158,109 @@
                 </pts>
             </display>
         </flow>
-        <aux name="Compete_with_rival">
-            <eqn>IF TIME &gt; 120 THEN&#x0A;1&#x0A;ELSE&#x0A;0</eqn>
-            <display x="79" y="189" color="blue" />
-        </aux>
-        <aux name="Converter_1" access="input">
-            <dimensions>
-                <dim name="Phone_Company" />
-            </dimensions>
-            <display x="80" y="234" color="blue" />
-        </aux>
-        <aux name="Extra_Supply">
-            <eqn>IF Compete_with_rival THEN&#x0A;(1-(Shop.Prices[3]-5)/Shop.Prices[1])*300000&#x0A;ELSE&#x0A;0</eqn>
-            <display x="78" y="142" color="blue" />
-        </aux>
         <display page_width="571" page_height="818" page_cols="2" isee:show_values_on_hover="true" isee:converter_size="medium" zoom="150" isee:animate_flows="true" isee:animate_stocks="true" isee:animate_converters="true" report_interval="0.0625" report_every_dt="true">
-            <connector x="317" y="246" uid="11" color="#FF007F">
-                <from>Price</from>
-                <to>Demand_Curve</to>
-            </connector>
-            <connector x="404" y="329" uid="12" color="#FF007F">
-                <from>Total_Market</from>
-                <to>Demand_Curve</to>
-            </connector>
-            <connector x="232" y="221" uid="13" color="#FF007F">
-                <from>Desired_Price</from>
-                <to>Change_in_Price</to>
-            </connector>
-            <connector x="307" y="279" uid="14" color="#FF007F">
-                <from>Price</from>
-                <to>Profit</to>
-            </connector>
-            <connector x="209" y="26" uid="15" color="#FF007F">
-                <from>Inventory_Rat</from>
-                <to>Effect_On_Price</to>
-            </connector>
-            <connector x="391" y="340" uid="16" color="#FF007F">
-                <from>Total_Market</from>
-                <to>Supply_Curve</to>
-            </connector>
-            <connector x="169" y="222" uid="17" color="#FF007F">
-                <from>Change_Delay</from>
-                <to>Change_in_Price</to>
-            </connector>
-            <connector x="398" y="47" uid="18" color="#FF007F">
-                <from>Demand_Curve</from>
-                <to>Inventory_Rat</to>
-            </connector>
-            <connector x="133" y="447" uid="19" color="#FF007F">
-                <from>Production_Price</from>
-                <to>Supply_Curve</to>
-            </connector>
-            <connector x="141" y="590" uid="20" color="#FF007F">
-                <from>Payment</from>
-                <to>Change</to>
-            </connector>
-            <connector x="160" y="26" uid="21" color="#FF007F">
-                <from>Current_Stock</from>
-                <to>Inventory_Rat</to>
-            </connector>
-            <connector x="241" y="556" uid="22" color="#FF007F">
-                <from>Tax_per_Phone</from>
-                <to>Payment</to>
-            </connector>
-            <connector x="209" y="136" uid="23" color="#FF007F">
+            <connector x="209" y="136" uid="9" color="#FF007F">
                 <from>Effect_On_Price</from>
                 <to>Desired_Price</to>
             </connector>
-            <connector x="125" y="455" uid="24" color="#FF007F">
+            <connector x="285" y="279" uid="10" color="#FF007F">
+                <from>Price</from>
+                <to>Supply_Curve</to>
+            </connector>
+            <connector x="109" y="52" uid="11" color="#FF007F">
+                <from>Inventory_Ratio</from>
+                <to>Current_Stock</to>
+            </connector>
+            <connector x="209" y="26" uid="12" color="#FF007F">
+                <from>Inventory_Rat</from>
+                <to>Effect_On_Price</to>
+            </connector>
+            <connector x="295" y="280" uid="13" color="#FF007F">
+                <from>Price</from>
+                <to>Payment</to>
+            </connector>
+            <connector x="94" y="63" uid="14" color="#FF007F">
+                <from>Inventory_Ratio</from>
+                <to>Supply</to>
+            </connector>
+            <connector x="317" y="246" uid="15" color="#FF007F">
+                <from>Price</from>
+                <to>Demand_Curve</to>
+            </connector>
+            <connector x="125" y="455" uid="16" color="#FF007F">
                 <from>Production_Price</from>
                 <to>Profit</to>
             </connector>
-            <connector x="274" y="275" uid="25" color="#FF007F">
+            <connector x="307" y="278" uid="17" color="#FF007F">
                 <from>Price</from>
+                <to>Profit</to>
+            </connector>
+            <connector x="125" y="380" uid="18" color="#FF007F">
+                <from>Supply_Curve</from>
+                <to>Supply</to>
+            </connector>
+            <connector x="241" y="609" uid="19" color="#FF007F">
+                <from>Phones_recycled</from>
+                <to>Payment</to>
+            </connector>
+            <connector x="31" y="452" uid="20" color="#FF007F">
+                <from>Profit</from>
+                <to>Change</to>
+            </connector>
+            <connector x="133" y="447" uid="21" color="#FF007F">
+                <from>Production_Price</from>
+                <to>Supply_Curve</to>
+            </connector>
+            <connector x="169" y="222" uid="22" color="#FF007F">
+                <from>Change_Delay</from>
                 <to>Change_in_Price</to>
             </connector>
-            <connector x="295" y="280" uid="26" color="#FF007F">
-                <from>Price</from>
-                <to>Payment</to>
+            <connector x="141" y="590" uid="23" color="#FF007F">
+                <from>Payment</from>
+                <to>Change</to>
+            </connector>
+            <connector x="160" y="26" uid="24" color="#FF007F">
+                <from>Current_Stock</from>
+                <to>Inventory_Rat</to>
+            </connector>
+            <connector x="28" y="157" uid="25" color="#FF007F">
+                <from>Supply</from>
+                <to>Profit</to>
+            </connector>
+            <connector x="404" y="329" uid="26" color="#FF007F">
+                <from>Total_Market</from>
+                <to>Demand_Curve</to>
             </connector>
             <connector x="67" y="396" uid="27" color="#FF007F">
                 <from>Sales</from>
                 <to>Profit</to>
             </connector>
-            <connector x="285" y="279" uid="28" color="#FF007F">
-                <from>Price</from>
+            <connector x="232" y="221" uid="28" color="#FF007F">
+                <from>Desired_Price</from>
+                <to>Change_in_Price</to>
+            </connector>
+            <connector x="391" y="340" uid="29" color="#FF007F">
+                <from>Total_Market</from>
                 <to>Supply_Curve</to>
             </connector>
-            <connector x="241" y="609" uid="29" color="#FF007F">
-                <from>Phones_recycled</from>
+            <connector x="274" y="275" uid="30" color="#FF007F">
+                <from>Price</from>
+                <to>Change_in_Price</to>
+            </connector>
+            <connector x="241" y="556" uid="31" color="#FF007F">
+                <from>Tax_per_Phone</from>
                 <to>Payment</to>
             </connector>
-            <connector x="109" y="52" uid="30" color="#FF007F">
-                <from>Inventory_Ratio</from>
-                <to>Current_Stock</to>
-            </connector>
-            <connector x="31" y="452" uid="31" color="#FF007F">
-                <from>Profit</from>
-                <to>Change</to>
-            </connector>
-            <connector x="28" y="157" uid="32" color="#FF007F">
-                <from>Supply</from>
-                <to>Profit</to>
+            <connector x="398" y="47" uid="32" color="#FF007F">
+                <from>Demand_Curve</from>
+                <to>Inventory_Rat</to>
             </connector>
             <connector x="284" y="245" uid="33" color="#FF007F">
                 <from>Price</from>
                 <to>Desired_Price</to>
             </connector>
-            <connector x="125" y="380" uid="34" color="#FF007F">
-                <from>Supply_Curve</from>
-                <to>Supply</to>
-            </connector>
-            <connector x="95" y="62" uid="35" color="#FF007F">
-                <from>Inventory_Ratio</from>
-                <to>Supply</to>
-            </connector>
-            <connector x="87" y="229" uid="36" color="#FF007F">
-                <from>Converter_1</from>
-                <to>Extra_Supply</to>
-            </connector>
-            <connector x="78" y="180" uid="37" color="#FF007F">
-                <from>Compete_with_rival</from>
-                <to>Extra_Supply</to>
-            </connector>
-            <connector x="69" y="140" uid="38" color="#FF007F">
-                <from>Extra_Supply</from>
-                <to>Supply</to>
-            </connector>
-            <stacked_container x="490" y="46" height="282" width="492" visible_index="0" uid="39">
-                <graph type="time_series" title="Untitled" background="#FFFFC9" show_grid="false" numbers_on_plots="true" isee:use_five_segments="false" isee:date_time="-704295970" time_precision="2" from="0" to="480">
+            <stacked_container x="490" y="46" height="282" width="492" visible_index="0" uid="34">
+                <graph type="time_series" title="Untitled" background="#FFFFC9" show_grid="false" numbers_on_plots="true" isee:use_five_segments="false" isee:date_time="-703518557" time_precision="2" from="0" to="480">
                     <plot index="0" pen_width="1" color="blue" precision="0" show_y_axis="true">
                         <entity name="Money" />
                     </plot>
@@ -301,7 +272,7 @@
                     </plot>
                 </graph>
             </stacked_container>
-            <pad_icon x="531" y="359" width="26" height="22" color="#008F44" label_side="bottom" label="Graph 1" type="graph" icon_of="39" />
+            <pad_icon x="531" y="359" width="26" height="22" color="#008F44" label_side="bottom" label="Graph 1" type="graph" icon_of="34" />
         </display>
         <interface page_width="788" page_height="528">
             <simulation_delay>0</simulation_delay>

@@ -1,0 +1,248 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<xmile version="1.0" level="3" xmlns="http://www.systemdynamics.org/XMILE" xmlns:isee="http://iseesystems.com/XMILE">
+    <header>
+        <smile version="1.0" namespace="std, isee">
+            <uses_submodels />
+        </smile>
+        <name>CLD_Competition</name>
+        <uuid>e8b7299d-4898-44f9-b5c3-2f3ff192f37f</uuid>
+        <vendor>isee systems, inc.</vendor>
+        <product version="10.0.4" lang="en">STELLA</product>
+    </header>
+    <style>
+        <model font-family="Arial" font-size="9" />
+        <interface font-family="Arial" font-size="9" />
+    </style>
+    <sim_specs method="Euler" time_units="Time">
+        <start>0</start>
+        <stop>12</stop>
+        <dt>0.25</dt>
+    </sim_specs>
+    <model_units />
+    <isee:prefs layer="map" grid_width="20" grid_height="50" divide_by_zero_alert="true" hide_taskbar="true" show_module_prefix="true">
+        <isee:window width="1920" height="997" />
+        <isee:security />
+        <isee:print_setup width="571" height="818" />
+    </isee:prefs>
+    <isee:equation_prefs order_by="module" />
+    <model>
+        <module name="Supply">
+            <display x="41" y="173" color="blue" />
+        </module>
+        <module name="Price">
+            <display x="98" y="189" color="blue" />
+        </module>
+        <module name="Demand">
+            <display x="153" y="214" color="blue" />
+        </module>
+        <module name="C_Supply">
+            <display x="249" y="70" color="blue" />
+        </module>
+        <module name="C_Price">
+            <display x="171" y="100" color="blue" />
+        </module>
+        <module name="C_Demand">
+            <display x="101" y="137" color="blue" />
+        </module>
+        <module name="Sales">
+            <display x="218" y="197" color="blue" />
+        </module>
+        <module name="Active_Users">
+            <display x="278" y="225" color="blue" />
+        </module>
+        <module name="Phone_Discarded">
+            <display x="209" y="290" color="blue" />
+        </module>
+        <module name="Production_Cost">
+            <display x="65" y="274" color="blue" />
+        </module>
+        <module name="Recycle_Tax">
+            <display x="134" y="322" color="blue" />
+        </module>
+        <display page_width="571" page_height="818" isee:show_values_on_hover="true" isee:converter_size="medium" isee:name_only_modules="true" zoom="300" isee:animate_flows="true" isee:animate_stocks="true" isee:animate_converters="true" report_every_dt="true" scroll_y="24">
+            <connector x="99" y="183" uid="0" color="#FF007F">
+                <from>Price</from>
+                <to>Supply</to>
+                <polarity>+</polarity>
+            </connector>
+            <connector x="41" y="179" uid="1" color="#FF007F">
+                <from>Supply</from>
+                <to>Price</to>
+                <polarity>-</polarity>
+            </connector>
+            <connector x="105" y="183" uid="2" color="#FF007F">
+                <from>Price</from>
+                <to>Demand</to>
+                <polarity>-</polarity>
+            </connector>
+            <connector x="149" y="220" uid="3" color="#FF007F">
+                <from>Demand</from>
+                <to>Price</to>
+                <polarity>+</polarity>
+            </connector>
+            <connector x="166" y="94" uid="4" color="#FF007F">
+                <from>C_Price</from>
+                <to>C_Demand</to>
+                <polarity>-</polarity>
+            </connector>
+            <connector x="250" y="76" uid="5" color="#FF007F">
+                <from>C_Supply</from>
+                <to>C_Price</to>
+                <polarity>-</polarity>
+            </connector>
+            <connector x="169" y="94" uid="6" color="#FF007F">
+                <from>C_Price</from>
+                <to>C_Supply</to>
+                <polarity>+</polarity>
+            </connector>
+            <connector x="105" y="143" uid="7" color="#FF007F">
+                <from>C_Demand</from>
+                <to>C_Price</to>
+                <polarity>+</polarity>
+            </connector>
+            <connector x="173" y="106" uid="8" color="#FF007F">
+                <from>C_Price</from>
+                <to>Demand</to>
+                <polarity>-</polarity>
+            </connector>
+            <connector x="100" y="183" uid="9" color="#FF007F">
+                <from>Price</from>
+                <to>C_Demand</to>
+                <polarity>-</polarity>
+            </connector>
+            <connector x="161" y="208" uid="10" color="#FF007F">
+                <from>Demand</from>
+                <to>Sales</to>
+                <polarity>+</polarity>
+            </connector>
+            <connector x="230" y="196" uid="11" color="#FF007F">
+                <from>Sales</from>
+                <to>Active_Users</to>
+                <polarity>+</polarity>
+            </connector>
+            <connector x="278" y="231" uid="12" color="#FF007F">
+                <from>Active_Users</from>
+                <to>Phone_Discarded</to>
+                <polarity>+</polarity>
+            </connector>
+            <connector x="178" y="284" uid="13" color="#FF007F">
+                <from>Phone_Discarded</from>
+                <to>Demand</to>
+                <polarity>+</polarity>
+            </connector>
+            <connector x="209" y="284" uid="14" color="#FF007F">
+                <from>Phone_Discarded</from>
+                <to>Active_Users</to>
+                <polarity>-</polarity>
+            </connector>
+            <connector x="54" y="268" uid="15" color="#FF007F">
+                <from>Production_Cost</from>
+                <to>Supply</to>
+                <polarity>-</polarity>
+            </connector>
+            <connector x="174" y="289" uid="16" color="#FF007F">
+                <from>Phone_Discarded</from>
+                <to>Recycle_Tax</to>
+                <polarity>+</polarity>
+            </connector>
+            <connector x="139" y="328" uid="17" color="#FF007F">
+                <from>Recycle_Tax</from>
+                <to>Phone_Discarded</to>
+                <polarity>-</polarity>
+            </connector>
+            <connector x="111" y="317" uid="18" color="#FF007F">
+                <from>Recycle_Tax</from>
+                <to>Production_Cost</to>
+                <polarity>+</polarity>
+            </connector>
+            <text_box x="58" y="169" uid="19" color="black" font-family="Arial" font-size="12" padding="5" width="25" height="24">B1</text_box>
+            <text_box x="111" y="194" uid="20" color="black" font-family="Arial" font-size="12" padding="5" width="25" height="24">B2</text_box>
+            <text_box x="195" y="72" uid="21" color="black" font-family="Arial" font-size="12" padding="5" width="25" height="24">B3</text_box>
+            <text_box x="126" y="108" uid="22" color="black" font-family="Arial" font-size="12" padding="5" width="25" height="24">B4</text_box>
+            <text_box x="133" y="158" uid="23" color="black" font-family="Arial" font-size="12" padding="5" width="29" height="24">R1</text_box>
+            <text_box x="233" y="250" uid="24" color="black" font-family="Arial" font-size="12" padding="5" width="25" height="24">B5</text_box>
+            <text_box x="178" y="226" uid="25" color="black" font-family="Arial" font-size="12" padding="5" width="29" height="24">R2</text_box>
+        </display>
+        <interface page_width="788" page_height="528">
+            <simulation_delay>0.1</simulation_delay>
+            <pages />
+        </interface>
+    </model>
+    <model name="Active_Users">
+        <display page_width="571" page_height="818" isee:show_values_on_hover="true" isee:converter_size="medium" isee:name_only_modules="true" isee:animate_flows="true" isee:animate_stocks="true" isee:animate_converters="true" report_every_dt="true" />
+        <interface page_width="788" page_height="528">
+            <simulation_delay>0.1</simulation_delay>
+            <pages />
+        </interface>
+    </model>
+    <model name="C_Demand">
+        <display page_width="571" page_height="818" isee:show_values_on_hover="true" isee:converter_size="medium" isee:name_only_modules="true" isee:animate_flows="true" isee:animate_stocks="true" isee:animate_converters="true" report_every_dt="true" />
+        <interface page_width="788" page_height="528">
+            <simulation_delay>0.1</simulation_delay>
+            <pages />
+        </interface>
+    </model>
+    <model name="C_Price">
+        <display page_width="571" page_height="818" isee:show_values_on_hover="true" isee:converter_size="medium" isee:name_only_modules="true" isee:animate_flows="true" isee:animate_stocks="true" isee:animate_converters="true" report_every_dt="true" />
+        <interface page_width="788" page_height="528">
+            <simulation_delay>0.1</simulation_delay>
+            <pages />
+        </interface>
+    </model>
+    <model name="C_Supply">
+        <display page_width="571" page_height="818" isee:show_values_on_hover="true" isee:converter_size="medium" isee:name_only_modules="true" isee:animate_flows="true" isee:animate_stocks="true" isee:animate_converters="true" report_every_dt="true" />
+        <interface page_width="788" page_height="528">
+            <simulation_delay>0.1</simulation_delay>
+            <pages />
+        </interface>
+    </model>
+    <model name="Demand">
+        <display page_width="571" page_height="818" isee:show_values_on_hover="true" isee:converter_size="medium" isee:name_only_modules="true" isee:animate_flows="true" isee:animate_stocks="true" isee:animate_converters="true" report_every_dt="true" />
+        <interface page_width="788" page_height="528">
+            <simulation_delay>0.1</simulation_delay>
+            <pages />
+        </interface>
+    </model>
+    <model name="Phone_Discarded">
+        <display page_width="571" page_height="818" isee:show_values_on_hover="true" isee:converter_size="medium" isee:name_only_modules="true" isee:animate_flows="true" isee:animate_stocks="true" isee:animate_converters="true" report_every_dt="true" />
+        <interface page_width="788" page_height="528">
+            <simulation_delay>0.1</simulation_delay>
+            <pages />
+        </interface>
+    </model>
+    <model name="Price">
+        <display page_width="571" page_height="818" isee:show_values_on_hover="true" isee:converter_size="medium" isee:name_only_modules="true" isee:animate_flows="true" isee:animate_stocks="true" isee:animate_converters="true" report_every_dt="true" />
+        <interface page_width="788" page_height="528">
+            <simulation_delay>0.1</simulation_delay>
+            <pages />
+        </interface>
+    </model>
+    <model name="Production_Cost">
+        <display page_width="571" page_height="818" isee:show_values_on_hover="true" isee:converter_size="medium" isee:name_only_modules="true" isee:animate_flows="true" isee:animate_stocks="true" isee:animate_converters="true" report_every_dt="true" />
+        <interface page_width="788" page_height="528">
+            <simulation_delay>0.1</simulation_delay>
+            <pages />
+        </interface>
+    </model>
+    <model name="Recycle_Tax">
+        <display page_width="571" page_height="818" isee:show_values_on_hover="true" isee:converter_size="medium" isee:name_only_modules="true" isee:animate_flows="true" isee:animate_stocks="true" isee:animate_converters="true" report_every_dt="true" />
+        <interface page_width="788" page_height="528">
+            <simulation_delay>0.1</simulation_delay>
+            <pages />
+        </interface>
+    </model>
+    <model name="Sales">
+        <display page_width="571" page_height="818" isee:show_values_on_hover="true" isee:converter_size="medium" isee:name_only_modules="true" isee:animate_flows="true" isee:animate_stocks="true" isee:animate_converters="true" report_every_dt="true" />
+        <interface page_width="788" page_height="528">
+            <simulation_delay>0.1</simulation_delay>
+            <pages />
+        </interface>
+    </model>
+    <model name="Supply">
+        <display page_width="571" page_height="818" isee:show_values_on_hover="true" isee:converter_size="medium" isee:name_only_modules="true" isee:animate_flows="true" isee:animate_stocks="true" isee:animate_converters="true" report_every_dt="true" />
+        <interface page_width="788" page_height="528">
+            <simulation_delay>0.1</simulation_delay>
+            <pages />
+        </interface>
+    </model>
+</xmile>
