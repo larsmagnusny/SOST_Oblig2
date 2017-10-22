@@ -174,7 +174,7 @@
                 <to>Flow_1</to>
             </connector>
             <stacked_container x="648" y="32" height="173" width="331" visible_index="0" uid="73">
-                <graph type="time_series" title="Untitled" background="#FFFFC9" show_grid="false" numbers_on_plots="true" isee:use_five_segments="false" isee:date_time="-703518557" time_precision="2" from="0" to="480">
+                <graph type="time_series" title="Untitled" background="#FFFFC9" show_grid="false" numbers_on_plots="true" isee:use_five_segments="false" isee:date_time="-703518474" time_precision="2" from="0" to="480">
                     <plot index="0" pen_width="1" color="#008F44" precision="0" show_y_axis="true">
                         <entity name="Usual_Customerss" index="1" />
                     </plot>

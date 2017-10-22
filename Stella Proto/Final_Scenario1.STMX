@@ -111,8 +111,8 @@
                 <from>Shop</from>
                 <to>Market</to>
             </connector>
-            <stacked_container x="21" y="268" height="411" width="717" visible_index="2" uid="8">
-                <graph type="time_series" title="Untitled" background="#FFFFC9" show_grid="false" numbers_on_plots="true" isee:use_five_segments="false" isee:date_time="-703518557" time_precision="2" from="0" to="480">
+            <stacked_container x="21" y="268" height="411" width="717" visible_index="0" uid="8">
+                <graph type="time_series" title="Untitled" background="#FFFFC9" show_grid="false" numbers_on_plots="true" isee:use_five_segments="false" isee:date_time="-703518474" time_precision="2" from="0" to="480">
                     <plot index="0" pen_width="1" color="blue" precision="0" show_y_axis="true">
                         <entity name="Dhors_Co.Money" />
                     </plot>
@@ -123,7 +123,7 @@
                         <entity name="Foreign_Competitor.Price" />
                     </plot>
                 </graph>
-                <graph type="time_series" title="Untitled" background="#FFFFC9" show_grid="false" numbers_on_plots="true" isee:use_five_segments="false" isee:date_time="-703518557" time_precision="2" from="0" to="480">
+                <graph type="time_series" title="Untitled" background="#FFFFC9" show_grid="false" numbers_on_plots="true" isee:use_five_segments="false" isee:date_time="-703518474" time_precision="2" from="0" to="480">
                     <plot index="0" pen_width="1" color="blue" precision="0" show_y_axis="true">
                         <entity name="Market.Usual_Customerss" index="1" />
                     </plot>
@@ -134,7 +134,7 @@
                         <entity name="Market.Usual_Customerss" index="3" />
                     </plot>
                 </graph>
-                <graph type="time_series" title="Untitled" background="#FFFFC9" show_grid="false" numbers_on_plots="true" isee:use_five_segments="false" isee:date_time="-703518557" time_precision="2" from="0" to="480">
+                <graph type="time_series" title="Untitled" background="#FFFFC9" show_grid="false" numbers_on_plots="true" isee:use_five_segments="false" isee:date_time="-703518474" time_precision="2" from="0" to="480">
                     <plot index="0" pen_width="1" color="blue" precision="0" show_y_axis="true">
                         <entity name="Shop.Ready_To_Buy" />
                     </plot>
